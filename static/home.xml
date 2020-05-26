@@ -1,0 +1,4 @@
+﻿<krpano>
+    <preview url="../assets/WechatIMG50.jpeg" details="16" type="CYLINDER" />
+    <view hlookat="0" vlookat="0" fovtype="VFOV" fov="90" fovmin="30" fovmax="150" />
+</krpano>

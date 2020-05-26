@@ -1,0 +1,72 @@
+.el-radio__label {
+    color: white
+}
+
+.el-main {
+    overflow: hidden;
+}
+
+.el-input__inner {
+    background-color: transparent;
+    height: 33px;
+    color: white
+}
+
+.el-textarea__inner {
+    background-color: transparent;
+    color: white;
+}
+
+.el-input__inner[DangerColor="danger"] {
+    background-color: transparent;
+}
+
+.el-input__inner[WarningColor="warning"] {
+    background-color: transparent;
+}
+
+.el-input__inner[SuccessColor="success"] {
+    background-color: transparent;
+}
+
+.el-form-item {
+    // margin-bottom: 5px
+}
+
+.el-form--label-top .el-form-item__label {
+    // padding: 5px;
+    color: white
+}
+
+//上传图片设置
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+
+.avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+}
+
+.el-upload__tip {
+    margin-top: 0
+}

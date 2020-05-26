@@ -1,0 +1,59 @@
+<krpano>
+  <view fov="90" fovmax="130" hlookat="-50" vlookat="-3" />
+  <!-- 仅仅使用网格预览全景(节约下载空间-->
+  <preview type="grid(cube,16,16,512,0xCCCCCC,0xFFFFFF,0x999999);" details ="16" />
+  <image>
+    <cube url="../img/test2/mobile_%s.jpg"/>
+  </image>
+  <view hfov="180" vfov="180" fov="90"  hlookat="0.0" vlookat="0.0" limitview="range " 
+        hlookatmin="-180" hlookatmax="180"  
+        vlookatmin="-90" vlookatmax="90"
+    />
+  <autorotate enabled="false"  waittime="1" speed="10.0" accel="1.0" horizon="45.0" />
+  <action name="draghotspot">
+		spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery, calc(mouse.stagex LT stagewidth/2 ? 'l' : 'r'));
+		sub(drag_adjustx, mouse.stagex, hotspotcenterx);
+		sub(drag_adjusty, mouse.stagey, hotspotcentery);
+		asyncloop(pressed,
+			sub(dx, mouse.stagex, drag_adjustx);
+			sub(dy, mouse.stagey, drag_adjusty);
+			screentosphere(dx, dy, ath, atv);
+			print_hotspot_pos();
+		  );
+	</action>
+  <action name="add_all_the_time_tooltip">
+        txtadd(tooltipname, 'tooltip_', get(name));
+        jscall(calc('console.log("text: ' + get(tooltipname) + '")'));
+        addplugin(get(tooltipname));
+        txtadd(plugin[get(tooltipname)].parent, 'hotspot[', get(name), ']');
+        set(plugin[get(tooltipname)].url,'%SWFPATH%/plugins/textfield.swf');
+        set(plugin[get(tooltipname)].align, top);
+        set(plugin[get(tooltipname)].edge,bottom);
+        set(plugin[get(tooltipname)].x, 0);
+        set(plugin[get(tooltipname)].y, -10);
+        set(plugin[get(tooltipname)].autowidth,true);
+        set(plugin[get(tooltipname)].autoheight,true);
+        set(plugin[get(tooltipname)].vcenter,true);
+        set(plugin[get(tooltipname)].background,true);
+        set(plugin[get(tooltipname)].backgroundcolor,0x000000);
+        set(plugin[get(tooltipname)].roundedge,5);
+        set(plugin[get(tooltipname)].backgroundalpha,0.65);
+        set(plugin[get(tooltipname)].padding,5);
+        set(plugin[get(tooltipname)].border,false);
+        set(plugin[get(tooltipname)].glow,0);
+        set(plugin[get(tooltipname)].glowcolor,0xFFFFFF);
+        set(plugin[get(tooltipname)].css,'text-align:center; color:#FFFFFF; font-family:MicrosoftYahei;  font-size:12px;');
+        if(device.mobile,set(plugin[get(tooltipname)].css,'text-align:center; color:#FFFFFF; font-family:MicrosoftYahei; font-weight:bold; font-size:24px;');
+        );
+        set(plugin[get(tooltipname)].textshadow,0);
+        set(plugin[get(tooltipname)].textshadowrange,6.0);
+        set(plugin[get(tooltipname)].textshadowangle,90);
+        set(plugin[get(tooltipname)].enabled,false);
+        set(plugin[get(tooltipname)].html, "")
+    </action>
+  <style 
+        name="your_hotspotstyle" 
+        distorted="false" 
+        onloaded="add_all_the_time_tooltip();"
+    />
+</krpano>
