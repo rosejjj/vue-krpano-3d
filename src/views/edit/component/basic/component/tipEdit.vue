@@ -75,8 +75,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'tip-edit',
+  created() {
+    this.form.imageUrl = this.worksData.tipIconPc;
+    this.form.duration = this.worksData.tipDuration;
+  },
   data() {
     return {
       type: 1,
@@ -96,6 +102,9 @@ export default {
     },
     handleAvatarSuccess() {},
     beforeAvatarUpload() {}
+  },
+  computed: {
+    ...mapGetters(['worksData'])
   }
 };
 </script>

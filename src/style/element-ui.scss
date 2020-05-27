@@ -33,7 +33,12 @@
     // margin-bottom: 5px
 }
 
-.el-form--label-top .el-form-item__label {
+// .el-form--label-top .el-form-item__label {
+//     // padding: 5px;
+//     color: white
+// }
+
+.el-form-item__label {
     // padding: 5px;
     color: white
 }
@@ -69,4 +74,9 @@
 
 .el-upload__tip {
     margin-top: 0
+}
+
+//滑块下方文字
+.el-slider__marks-text {
+    
 }

@@ -128,7 +128,7 @@
               >保存</el-button>
               <el-button
                 @click="removeHost"
-                type="wran"
+                type="danger"
               >删除</el-button>
             </el-form-item>
           </el-form>

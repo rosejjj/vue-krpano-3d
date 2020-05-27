@@ -4,6 +4,12 @@
     border-width: 1px;
 }
 
+@mixin background {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 @mixin edit-box {
     position: fixed;
     background-color: #333333;

@@ -1,8 +1,21 @@
 const state = {
   editKrpano: 1, //当前编辑场景
+  prevKrpano: 1, //当前预览场景
   wordsData: {
+    tipIconPc: require('../../assets/tip.png'), //pc端提示图片
+    tipIconMobile: require('../../assets/tip.png'), //移动端提示图片
+    tipDuration: 3, //封面持续时间
+    workLink: 'https://www.baidu.com', //作品链接
+    //logo配置
+    logo: {
+      title: '这是logo',
+      href: 'https://www.baidu.com',
+      posType: 1,
+      isShow: false,
+      url: require('../../assets/tip.png')
+    },
     initKrpano: 1, //初始化场景
-    //当前所有数据
+    //所有场景单独数据
     krpanoList: [
       {
         id: 1,
@@ -77,6 +90,9 @@ const mutations = {
   },
   SET_EDITKRPANO(state, editKrpano) {
     state.editKrpano = editKrpano;
+  },
+  SET_PREVKRPANO(state, prevKrpano) {
+    state.prevKrpano = prevKrpano;
   }
 };
 

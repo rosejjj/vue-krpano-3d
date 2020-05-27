@@ -9,13 +9,30 @@
         alt="关闭按钮"
       />
     </div>
+    <el-form>
+      <el-form-item></el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {};
+    return {
+      form: {
+        animateType: 1
+      },
+      animateList: [
+        {
+          id: 1,
+          name: '小行星开场'
+        },
+        {
+          id: 2,
+          name: '水平迅游开场'
+        }
+      ]
+    };
   },
   methods: {
     close() {}

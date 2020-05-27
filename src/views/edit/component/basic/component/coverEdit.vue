@@ -1,7 +1,7 @@
 <template>
-  <div class="logo-edit">
-    <div class="logo-head">
-      <h4 class="head-title">自定义logo</h4>
+  <div class="cover-edit">
+    <div class="cover-head">
+      <h4 class="head-title">开场封面</h4>
       <img
         @click="close"
         class="close"
@@ -13,7 +13,7 @@
       class="p20"
       label-position="top"
     >
-      <el-form-item>
+      <el-form-item label="桌面端">
         <el-upload
           class="avatar-uploader"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -22,8 +22,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="form.url"
-            :src="form.url"
+            v-if="form.imageUrl"
+            :src="form.imageUrl"
             class="avatar"
           />
           <i
@@ -36,25 +36,31 @@
           >建议尺寸 300 X 300</div>
         </el-upload>
       </el-form-item>
-      <el-form-item label="显示位置">
-        <el-radio-group v-model="form.posType">
-          <el-radio
-            v-for="item in posList"
-            :key="item.id"
-            :label="item.id"
-          >{{ item.name }}</el-radio>
-        </el-radio-group>
+      <el-form-item label="移动端">
+        <el-upload
+          class="avatar-uploader"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <img
+            v-if="form.imageUrl"
+            :src="form.imageUrl"
+            class="avatar"
+          />
+          <i
+            v-else
+            class="el-icon-plus avatar-uploader-icon"
+          ></i>
+          <div
+            class="el-upload__tip"
+            slot="tip"
+          >建议尺寸 300 X 300</div>
+        </el-upload>
       </el-form-item>
-      <el-form-item label="网址">
-        <el-input
-          v-model="form.title"
-          placeholder="输入自定义标题"
-        ></el-input>
-        <el-input
-          class="mt10"
-          v-model="form.href"
-          placeholder="为LOGO添加超链接"
-        ></el-input>
+      <el-form-item>
+        <el-button type="primary">完成</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -64,22 +70,15 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  name: 'cover-edit',
+  created() {
+    this.form.imageUrl = this.worksData.tipIconPc
+  },
   data() {
     return {
       form: {
-        url: '',
-        posType: 1
-      },
-      posList: [
-        {
-          id: 1,
-          name: '左上'
-        },
-        {
-          id: 2,
-          name: '右下'
-        }
-      ]
+        imageUrl: ''
+      }
     };
   },
   methods: {
@@ -91,26 +90,18 @@ export default {
   },
   computed: {
     ...mapGetters(['worksData'])
-  },
-  watch: {
-    worksData: {
-      handler(newValue, oldValue) {
-        this.form = { ...newValue.logo };
-      },
-      immediate: true
-    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import '@/style/mixins.scss';
-.logo-edit {
+.cover-edit {
   @include edit-box;
-  .logo-head {
+  .cover-head {
     @include edit-head;
     .head-title {
-      font-size: 14px;
+      font-size: 12px;
     }
     .close {
       width: 18px;

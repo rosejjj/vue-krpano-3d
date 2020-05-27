@@ -49,11 +49,28 @@
       </el-form-item>
       <el-form-item label="全局设置">
         <el-button
+          class="mt10"
           @click="baseType = item.id"
-          v-for="item in globalList"
+          v-for="item in globalSet"
           :key="item.id"
           type="primary"
         >{{ item.name }}</el-button>
+      </el-form-item>
+      <el-form-item label="全局开关">
+        <div class="w100 flex-row -cen">
+          <div class="mr20">
+            <span class="pr10">场景选择</span>
+            <el-switch v-model="switchFrom.krpanoSelect"></el-switch>
+          </div>
+          <div class="mr20">
+            <span class="pr10">场景标题</span>
+            <el-switch v-model="switchFrom.isShowTitle"></el-switch>
+          </div>
+          <div class="mr20">
+            <span class="pr10">分享按钮</span>
+            <el-switch v-model="switchFrom.isShowShare"></el-switch>
+          </div>
+        </div>
       </el-form-item>
     </el-form>
     <transition-group name="slider">
@@ -62,11 +79,21 @@
         @close="baseType = ''"
         v-show="baseType === 1"
       ></tip-edit>
+      <cover-edit
+        key="2"
+        @close="baseType = ''"
+        v-show="baseType === 2"
+      ></cover-edit>
       <logo-edit
         key="5"
         @close="baseType = ''"
         v-show="baseType === 5"
       ></logo-edit>
+      <cruise
+        key="4"
+        @close="baseType = ''"
+        v-show="baseType === 4"
+      ></cruise>
       <animate-edit
         key="3"
         @close="baseType = ''"
@@ -80,23 +107,34 @@
 import TipEdit from './component/tipEdit';
 import LogoEdit from './component/logoEdit';
 import AnimateEdit from './component/animateEdit';
+import CoverEdit from './component/coverEdit';
+import Cruise from './component/cruise';
 
 export default {
   components: {
     TipEdit,
     LogoEdit,
-    AnimateEdit
+    AnimateEdit,
+    CoverEdit,
+    Cruise
   },
   data() {
     return {
-      baseType: '',
+      baseType: '', //当前编辑设置
       form: {
         type: 1,
         logo: require('../../../../assets/WechatIMG50.jpeg'),
         name: '测试全景',
-        desc: '' //全景描述
+        desc: '描述' //全景描述
       },
-      globalList: [
+      //当前全局开关字段
+      switchFrom: {
+        krpanoSelect: false,
+        isShowTitle: false,
+        isShowShare: false
+      },
+      //全局设置
+      globalSet: [
         {
           id: 1,
           name: '开场提示'

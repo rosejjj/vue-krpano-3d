@@ -95,10 +95,42 @@
       top="10vh"
       :before-close="handleClose"
     >
-      <div
-        id="previewKrpano"
-        style="width: 100%; height: 600px"
-      ></div>
+      <div id="previewKrpano">
+        <img
+          v-show="isShowTip"
+          class="tip-icon"
+          :src="worksData.tipIconPc"
+          alt="移动端提示图片"
+        />
+        <div
+          v-show="iframeShow"
+          class="popup"
+        >
+          <iframe
+            style="width: 100%; height: 100%;"
+            :src="iframeUrl"
+            frameborder="0"
+            scrolling="auto"
+          ></iframe>
+          <img
+            @click="iframeShow = false"
+            class="cancel"
+            src="@/assets/close.png"
+            alt="取消按钮"
+          />
+        </div>
+        <!-- 场景列表 -->
+        <div class="krpano-list flex-row cen-cen">
+          <div
+            v-for="item in krpanoList"
+            :key="item.id"
+            class="select-item"
+            :style="{ backgroundImage: `url(${item.logo})` }"
+            :class="{ active: item.id === prevKrpano }"
+            @click="selectPreview(item)"
+          ></div>
+        </div>
+      </div>
     </el-dialog>
   </el-container>
 </template>
@@ -120,7 +152,10 @@ export default {
   },
   data() {
     return {
+      iframeUrl: '', //超链接href
+      iframeShow: false, //显示全景器弹窗
       type: 1, //当前编辑模块
+      isShowTip: true, //是否显示预览全景图的提示图片
       krpano: '', //全景对象
       previewKrpano: '',
       dialogVisible: false, //显示弹窗
@@ -145,7 +180,7 @@ export default {
   methods: {
     //设置对应热点
     setHot(krpano, item) {
-      let awaitNum = this.previewShow ? 350 : 450;
+      let awaitNum = this.previewShow ? 100 : 200;
       this[krpano].call(`addhotspot(${item.spotname})`);
       this[krpano].call(
         `hotspot[${item.spotname}].loadstyle(your_hotspotstyle)`
@@ -159,23 +194,62 @@ export default {
       }, awaitNum);
       //编辑模式
       this[krpano].set(`hotspot[${item.spotname}].ondown`, `draghotspot()`);
+      this[krpano].set(
+        `hotspot[${item.spotname}].onclick`,
+        this.setLoad.bind(this, item)
+      );
+    },
+    //预览窗口场景列表选择
+    selectPreview(item) {
+      this.setPrevKrpano(item.id);
+      this.previewKrpano.call(
+        `loadpano( ${item.url} , null, MERGE, BLEND(0.3))`
+      );
+      setTimeout(() => {
+        this.initKrpano('previewKrpano');
+      }, 100);
+    },
+    //设置跳转方式和链接
+    setLoad(item) {
+      let { type, href, hrefType } = item;
+      if (type != 2) {
+        let selectKrpano = this.krpanoList.find(item => item.url === href);
+        this.setPrevKrpano(selectKrpano.id);
+        this.previewKrpano.call(`loadpano( ${href} , null, MERGE, BLEND(0.3))`);
+        setTimeout(() => {
+          this.initKrpano('previewKrpano');
+        }, 100);
+        return;
+      }
+      if (!hrefType || hrefType == 1) {
+        window.open(href);
+      } else if (hrefType == 2) {
+        this.iframeShow = true;
+        this.iframeUrl = href;
+      }
     },
     //初始化场景数据
     initKrpano(obj) {
-      let data = this.krpanoDetail;
+      setTimeout(() => {
+        this.isShowTip = false;
+      }, 3000);
+      //判断当前是预览还是编辑取对应数据
+      let data = this.dialogVisible ? this.previewDetail : this.krpanoDetail;
       this[obj].set('view.hlookat', data.hlookat);
       this[obj].set('view.vlookat', data.vlookat);
       this[obj].set('view.hlookatmin', data.hlookatmin);
       this[obj].set('view.hlookatmax', data.hlookatmax);
       this[obj].set('view.vlookatmin', data.vlookatmin);
       this[obj].set('view.vlookatmax', data.vlookatmax);
-      data.hostList.forEach(item => this.setHot('previewKrpano', item));
+      data.hostList.forEach(item => this.setHot(obj, item));
     },
+    //预览全景图渲染完成
     previewReady(obj) {
       this.previewKrpano = obj;
+      this.isShowTip = true;
       setTimeout(() => {
         this.initKrpano('previewKrpano');
-      }, 50);
+      }, 100);
     },
     handleClose() {
       this.dialogVisible = false;
@@ -184,10 +258,10 @@ export default {
     preview() {
       this.dialogVisible = true;
       if (this.previewKrpano) {
+        this.isShowTip = true;
         this.initKrpano('previewKrpano');
         return;
       }
-      let worksData = JSON.parse(JSON.stringify(this.worksData));
       setTimeout(() => {
         embedpano({
           xml: `${this.publicPath}/xml/home.xml`,
@@ -198,7 +272,7 @@ export default {
           passQueryParameters: true,
           onready: this.previewReady
         });
-      }, 200);
+      }, 100);
     },
     //应用视角到场景
     setInitView() {
@@ -220,15 +294,26 @@ export default {
     },
     //设置编辑场景
     setItem(item) {
-      this.krpano.call(`loadpano(${item.url}, null, MERGE, BLEND(1))`);
+      this.krpano.call(`loadpano(${item.url})`);
       this.setKrpano(item.id);
+      setTimeout(() => {
+        this.initKrpano('krpano');
+      }, 100);
     },
     ...mapMutations({
-      setKrpano: 'krpano/SET_EDITKRPANO'
+      setKrpano: 'krpano/SET_EDITKRPANO',
+      setPrevKrpano: 'krpano/SET_PREVKRPANO'
     })
   },
   computed: {
-    ...mapGetters(['krpanoList', 'editKrpano', 'worksData', 'krpanoDetail'])
+    ...mapGetters([
+      'krpanoList',
+      'editKrpano',
+      'prevKrpano',
+      'worksData',
+      'krpanoDetail',
+      'previewDetail'
+    ])
   }
 };
 </script>
@@ -258,7 +343,7 @@ export default {
       .perspe-box {
         position: absolute;
         width: 60%;
-        height: 50%;
+        height: 60%;
         border: 2px solid white;
         top: 50%;
         left: 50%;
@@ -320,6 +405,56 @@ export default {
       border-radius: 5px;
       font-size: 12px;
       cursor: pointer;
+    }
+  }
+  #previewKrpano {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    .tip-icon {
+      z-index: 1000;
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(-50%, -50%, 0);
+    }
+    .popup {
+      position: absolute;
+      z-index: 3000;
+      width: 85%;
+      height: 70%;
+      background-color: white;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      .cancel {
+        cursor: pointer;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        top: 0;
+        right: -40px;
+      }
+    }
+    .krpano-list {
+      position: absolute;
+      width: 100%;
+      height: 100px;
+      bottom: 10%;
+      background-color: rgba(7, 17, 27, 0.4);
+      z-index: 1000;
+      .select-item {
+        width: 85px;
+        height: 85px;
+        background-color: white;
+        margin: 0 10px;
+        @include background;
+        &.active {
+          border: 2px solid yellow;
+        }
+      }
     }
   }
 }
