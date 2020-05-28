@@ -22,8 +22,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="form.imageUrl"
-            :src="form.imageUrl"
+            v-if="form.pcUrl"
+            :src="form.pcUrl"
             class="avatar"
           />
           <i
@@ -45,8 +45,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="form.imageUrl"
-            :src="form.imageUrl"
+            v-if="form.mobileUrl"
+            :src="form.mobileUrl"
             class="avatar"
           />
           <i
@@ -68,7 +68,10 @@
         ></el-slider>
       </el-form-item>
       <el-form-item style="margin-top: 50px">
-        <el-button type="primary">保存</el-button>
+        <el-button
+          @click="save"
+          type="primary"
+        >保存</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -76,18 +79,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import setWorksData from '@/mixins/setWorksData.js';
 
 export default {
   name: 'tip-edit',
-  created() {
-    this.form.imageUrl = this.worksData.tipIconPc;
-    this.form.duration = this.worksData.tipDuration;
-  },
+  mixins: [setWorksData],
   data() {
     return {
       type: 1,
       form: {
-        imageUrl: '',
+        pcUrl: '',
+        mobileUrl: '',
         duration: 10
       },
       marks: {
@@ -97,6 +99,10 @@ export default {
     };
   },
   methods: {
+    save() {
+      this.buildGlobal('tip', this.form);
+      this.close();
+    },
     close() {
       this.$emit('close');
     },
@@ -105,6 +111,14 @@ export default {
   },
   computed: {
     ...mapGetters(['worksData'])
+  },
+  watch: {
+    'worksData.tip': {
+      handler(newValue, oldValue) {
+        this.form = { ...newValue };
+      },
+      immediate: true
+    }
   }
 };
 </script>

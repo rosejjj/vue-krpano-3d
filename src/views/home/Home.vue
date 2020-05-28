@@ -95,12 +95,18 @@
       top="10vh"
       :before-close="handleClose"
     >
-      <div id="previewKrpano">
+      <!-- <div id="previewKrpano">
         <img
           v-show="isShowTip"
           class="tip-icon"
-          :src="worksData.tipIconPc"
+          :src="worksData.tip.pcUrl"
           alt="移动端提示图片"
+        />
+        <img
+          :style="worksData.logo.posType === 1 ? leftStyle : rightStyle"
+          class="logo-icon"
+          :src="worksData.logo.url"
+          alt="这是全景图logo"
         />
         <div
           v-show="iframeShow"
@@ -119,7 +125,6 @@
             alt="取消按钮"
           />
         </div>
-        <!-- 场景列表 -->
         <div class="krpano-list flex-row cen-cen">
           <div
             v-for="item in krpanoList"
@@ -130,7 +135,14 @@
             @click="selectPreview(item)"
           ></div>
         </div>
-      </div>
+      </div>-->
+      <iframe
+        v-if="dialogVisible"
+        frameborder="0"
+        id="view"
+        src="http://192.168.103.147:8081"
+        style="width: 100%; height: 600px"
+      ></iframe>
     </el-dialog>
   </el-container>
 </template>
@@ -160,6 +172,14 @@ export default {
       previewKrpano: '',
       dialogVisible: false, //显示弹窗
       publicPath: process.env.BASE_URL, //静态资源绝对路径
+      leftStyle: {
+        left: '10px',
+        top: '10px'
+      },
+      rightStyle: {
+        right: '10px',
+        bottom: '10px'
+      },
       form: {
         hlookat: 0.0,
         vlookat: 0.0
@@ -180,7 +200,7 @@ export default {
   methods: {
     //设置对应热点
     setHot(krpano, item) {
-      let awaitNum = this.previewShow ? 100 : 200;
+      let awaitNum = this.previewShow ? 200 : 300;
       this[krpano].call(`addhotspot(${item.spotname})`);
       this[krpano].call(
         `hotspot[${item.spotname}].loadstyle(your_hotspotstyle)`
@@ -193,11 +213,16 @@ export default {
         this[krpano].set(`plugin[tooltip_${item.spotname}].html`, item.title);
       }, awaitNum);
       //编辑模式
-      this[krpano].set(`hotspot[${item.spotname}].ondown`, `draghotspot()`);
-      this[krpano].set(
-        `hotspot[${item.spotname}].onclick`,
-        this.setLoad.bind(this, item)
-      );
+      if (!this.dialogVisible) {
+        this[krpano].set(`hotspot[${item.spotname}].ondown`, `draghotspot()`);
+      }
+      //预览模式
+      if (this.dialogVisible) {
+        this[krpano].set(
+          `hotspot[${item.spotname}].onclick`,
+          this.setLoad.bind(this, krpano, item)
+        );
+      }
     },
     //预览窗口场景列表选择
     selectPreview(item) {
@@ -210,14 +235,14 @@ export default {
       }, 100);
     },
     //设置跳转方式和链接
-    setLoad(item) {
+    setLoad(krpano, item) {
       let { type, href, hrefType } = item;
       if (type != 2) {
         let selectKrpano = this.krpanoList.find(item => item.url === href);
         this.setPrevKrpano(selectKrpano.id);
-        this.previewKrpano.call(`loadpano( ${href} , null, MERGE, BLEND(0.3))`);
+        this[krpano].call(`loadpano( ${href} , null, MERGE, BLEND(0.3))`);
         setTimeout(() => {
-          this.initKrpano('previewKrpano');
+          this.initKrpano(krpano);
         }, 100);
         return;
       }
@@ -230,11 +255,18 @@ export default {
     },
     //初始化场景数据
     initKrpano(obj) {
-      setTimeout(() => {
-        this.isShowTip = false;
-      }, 3000);
       //判断当前是预览还是编辑取对应数据
       let data = this.dialogVisible ? this.previewDetail : this.krpanoDetail;
+      //图片提示时间
+      let duration = this.worksData.tip.duration;
+      this.isShowTip = true;
+      setTimeout(() => {
+        this.isShowTip = false;
+      }, duration * 1000);
+      if (this.dialogVisible) {
+        this[obj].set('autorotate.speed', this.worksData.cruise.speed);
+        this[obj].set('autorotate.enabled', this.worksData.cruise.auto);
+      }
       this[obj].set('view.hlookat', data.hlookat);
       this[obj].set('view.vlookat', data.vlookat);
       this[obj].set('view.hlookatmin', data.hlookatmin);
@@ -246,33 +278,40 @@ export default {
     //预览全景图渲染完成
     previewReady(obj) {
       this.previewKrpano = obj;
-      this.isShowTip = true;
       setTimeout(() => {
         this.initKrpano('previewKrpano');
       }, 100);
     },
     handleClose() {
+      this.iframeUrl = null;
       this.dialogVisible = false;
     },
     //预览初始化
     preview() {
       this.dialogVisible = true;
-      if (this.previewKrpano) {
-        this.isShowTip = true;
-        this.initKrpano('previewKrpano');
-        return;
-      }
+      // if (this.previewKrpano) {
+      //   this.isShowTip = true
+      //   this.initKrpano('previewKrpano');
+      //   return;
+      // }
+      // setTimeout(() => {
+      //   embedpano({
+      //     xml: `${this.publicPath}/xml/home.xml`,
+      //     target: 'previewKrpano',
+      //     html5: 'auto',
+      //     id: 'previewObject',
+      //     mobilescale: 1.0,
+      //     passQueryParameters: true,
+      //     onready: this.previewReady
+      //   });
+      // }, 100);
       setTimeout(() => {
-        embedpano({
-          xml: `${this.publicPath}/xml/home.xml`,
-          target: 'previewKrpano',
-          html5: 'auto',
-          id: 'previewObject',
-          mobilescale: 1.0,
-          passQueryParameters: true,
-          onready: this.previewReady
-        });
-      }, 100);
+        let view = document.getElementById('view');
+        view.contentWindow.postMessage(
+          this.worksData,
+          'http://192.168.103.147:8081'
+        );
+      }, 200);
     },
     //应用视角到场景
     setInitView() {
@@ -419,6 +458,12 @@ export default {
       left: 50%;
       top: 50%;
       transform: translate3d(-50%, -50%, 0);
+    }
+    .logo-icon {
+      z-index: 1000;
+      position: absolute;
+      width: 200px;
+      height: 100px;
     }
     .popup {
       position: absolute;

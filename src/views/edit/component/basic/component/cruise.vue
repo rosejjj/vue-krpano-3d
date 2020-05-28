@@ -23,14 +23,14 @@
       <el-form-item>
         <div class="flex-row sp-be-cen">
           <span>场景旋转时间</span>
-          <span>{{ form.roteTime | formatSeconds}}</span>
+          <span>{{ roteTime | formatSeconds}}</span>
         </div>
       </el-form-item>
       <el-form-item class="p10">
         <el-slider
           :min="30"
           :max="360"
-          v-model="form.roteTime"
+          v-model="roteTime"
         ></el-slider>
       </el-form-item>
       <el-form-item>
@@ -40,24 +40,37 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">完成</el-button>
+        <el-button
+          @click="save"
+          type="primary"
+        >完成</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import setWorksData from '@/mixins/setWorksData.js';
+
 export default {
+  name: 'cruise',
+  mixins: [setWorksData],
   data() {
     return {
+      roteTime: 30, //旋转时间
       form: {
         auto: false, //是否自动巡游
-        roteTime: 30, //旋转时间
+        speed: 12, //旋转时间
         autoLoad: false //旋转一圈自动跳转下一场景
       }
     };
   },
   methods: {
+    save() {
+      this.buildGlobal('cruise', this.form);
+      this.close();
+    },
     close() {
       this.$emit('close');
     }
@@ -67,6 +80,23 @@ export default {
       let minutes = parseInt(value / 60).toString();
       let seconds = (value % 60).toString().padStart(2, '0');
       return minutes > 1 ? `${minutes}分${seconds}秒` : `${seconds}秒`;
+    }
+  },
+  watch: {
+    roteTime(value) {
+      this.form.speed = (360 / value).toFixed(1);
+    }
+  },
+  computed: {
+    ...mapGetters(['worksData'])
+  },
+  watch: {
+    'worksData.cruise': {
+      handler(newValue, oldValue) {
+        this.form = { ...newValue };
+        this.roteTime = parseInt(360 / this.form.speed);
+      },
+      immediate: true
     }
   }
 };

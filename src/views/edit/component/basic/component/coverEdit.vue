@@ -22,8 +22,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="form.imageUrl"
-            :src="form.imageUrl"
+            v-if="form.pcUrl"
+            :src="form.pcUrl"
             class="avatar"
           />
           <i
@@ -45,8 +45,8 @@
           :before-upload="beforeAvatarUpload"
         >
           <img
-            v-if="form.imageUrl"
-            :src="form.imageUrl"
+            v-if="form.mobileUrl"
+            :src="form.mobileUrl"
             class="avatar"
           />
           <i
@@ -60,7 +60,10 @@
         </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">完成</el-button>
+        <el-button
+          @click="save"
+          type="primary"
+        >完成</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -68,20 +71,24 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import setWorksData from 'vuex';
 
 export default {
   name: 'cover-edit',
-  created() {
-    this.form.imageUrl = this.worksData.tipIconPc
-  },
+  mixins: [setWorksData],
   data() {
     return {
       form: {
-        imageUrl: ''
+        pcUrl: '',
+        mobileUrl: ''
       }
     };
   },
   methods: {
+    save() {
+      this.buildGlobal('cover', this.form);
+      this.close();
+    },
     close() {
       this.$emit('close');
     },
@@ -90,6 +97,14 @@ export default {
   },
   computed: {
     ...mapGetters(['worksData'])
+  },
+  watch: {
+    'worksData.cover': {
+      handler(newValue, oldValue) {
+        this.form = { ...newValue };
+      },
+      immediate: true
+    }
   }
 };
 </script>

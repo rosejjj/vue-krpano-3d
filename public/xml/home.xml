@@ -18,7 +18,7 @@
         vlookatmin="-90" vlookatmax="90"
     />
   <!-- 预览图设置 -->
-  <preview url="../WechatIMG50.jpeg" details="16" type="SPHERE" />
+  <preview url="../WechatIMG50.jpeg" details="2" type="SPHERE" />
   <!-- 全景图设置 -->
   <image type="SPHERE" >
     <sphere url="../WechatIMG50.jpeg"/>
@@ -46,7 +46,7 @@
         keydownrepeat="true"  
         bouncinglimits="false"/>
   <!-- 设置自动旋转 -->
-  <autorotate enabled="false"  waittime="1" speed="10.0" accel="1.0" horizon="45.0" />
+  <autorotate enabled="false"  waittime="1" speed="10.0" accel="0.5" horizon="0.0" />
   <!-- 热点拖拽功能 -->
   <action name="draghotspot">
 		spheretoscreen(ath, atv, hotspotcenterx, hotspotcentery, calc(mouse.stagex LT stagewidth/2 ? 'l' : 'r'));
@@ -123,6 +123,10 @@
         set(plugin[get(bordername)].html, "真香");
         set(plugin[get(bordername)].visible, true);
         jscall(calc('console.log("border: ' + get(bordername) + '")'));
+  
+  
+  
+  
   </action>
   <!-- <hotspot type="image"  url="./img/test_logo.png"  name="xiang"/> -->
   <style 

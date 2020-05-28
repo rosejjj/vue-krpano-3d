@@ -56,14 +56,22 @@
           placeholder="为LOGO添加超链接"
         ></el-input>
       </el-form-item>
+      <el-form-item>
+        <el-button
+          @click="save"
+          type="primary"
+        >完成</el-button>
+      </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import setWorksData from '@/mixins/setWorksData.js';
 
 export default {
+  mixins: [setWorksData],
   data() {
     return {
       form: {
@@ -83,6 +91,10 @@ export default {
     };
   },
   methods: {
+    save() {
+      this.buildGlobal('logo', this.form);
+      this.close();
+    },
     close() {
       this.$emit('close');
     },
@@ -93,9 +105,9 @@ export default {
     ...mapGetters(['worksData'])
   },
   watch: {
-    worksData: {
+    'worksData.logo': {
       handler(newValue, oldValue) {
-        this.form = { ...newValue.logo };
+        this.form = { ...newValue };
       },
       immediate: true
     }

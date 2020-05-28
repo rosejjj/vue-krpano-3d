@@ -11,6 +11,12 @@ export default {
       worksData.krpanoList[index] = obj;
       this.setWorksData(worksData);
     },
+    buildGlobal(key, form) {
+      let worksData = JSON.parse(JSON.stringify(this.worksData));
+      worksData[key] = form;
+      console.log(worksData);
+      this.setWorksData(worksData);
+    },
     ...mapMutations({
       setWorksData: 'krpano/SET_WORKSDATA'
     })

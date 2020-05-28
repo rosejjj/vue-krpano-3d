@@ -184,27 +184,9 @@ export default {
             width: '30px',
             height: '30px'
           }
-        },
-        {
-          id: 2,
-          url: require('../../../assets/icon/vtourskin_mapspot.png'),
-          name: '图标2',
-          style: {
-            width: '30px',
-            height: '30px'
-          }
-        },
-        {
-          id: 3,
-          url: require('../../../assets/icon/vtourskin_mapspotactive.png'),
-          name: '图标3',
-          style: {
-            width: '30px',
-            height: '30px'
-          }
         }
       ],
-      //hyper
+      //弹窗对应显示
       hyperList: [
         {
           id: 1,
