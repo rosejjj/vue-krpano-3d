@@ -9,9 +9,16 @@
         alt="关闭按钮"
       />
     </div>
-    <el-form>
-      <el-form-item></el-form-item>
-    </el-form>
+    <div class="animate-wrapper p20">
+      <div class="animate-item flex-row sp-be-cen">
+        <span>小行星开场动画</span>
+        <el-switch
+          v-model="animateType"
+          active-color="#409EFF"
+          inactive-color="#ff4949"
+        ></el-switch>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,23 +26,13 @@
 export default {
   data() {
     return {
-      form: {
-        animateType: 1
-      },
-      animateList: [
-        {
-          id: 1,
-          name: '小行星开场'
-        },
-        {
-          id: 2,
-          name: '水平迅游开场'
-        }
-      ]
+      animateType: true
     };
   },
   methods: {
-    close() {}
+    close() {
+      this.$emit('close');
+    }
   }
 };
 </script>
@@ -53,6 +50,13 @@ export default {
       width: 18px;
       height: 18px;
       cursor: pointer;
+    }
+  }
+  .animate-wrapper {
+    width: 100%;
+    .animate-item {
+      width: 100%;
+      font-size: 14px;
     }
   }
 }

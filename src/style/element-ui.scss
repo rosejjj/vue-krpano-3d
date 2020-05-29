@@ -4,6 +4,7 @@
 
 .el-main {
     overflow: hidden;
+    padding: 0
 }
 
 .el-input__inner {
@@ -74,9 +75,4 @@
 
 .el-upload__tip {
     margin-top: 0
-}
-
-//滑块下方文字
-.el-slider__marks-text {
-    
 }

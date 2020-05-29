@@ -43,9 +43,9 @@
       </el-aside>
       <el-main>
         <div class="krpano-show">
-          <basic v-show="type === 1"></basic>
+          <basic v-show="$route.path === '/basic'"></basic>
           <div
-            v-show="type !== 1"
+            v-show="$route.path !== '/basic'"
             id="krpano"
           >
             <el-button
@@ -95,47 +95,6 @@
       top="10vh"
       :before-close="handleClose"
     >
-      <!-- <div id="previewKrpano">
-        <img
-          v-show="isShowTip"
-          class="tip-icon"
-          :src="worksData.tip.pcUrl"
-          alt="移动端提示图片"
-        />
-        <img
-          :style="worksData.logo.posType === 1 ? leftStyle : rightStyle"
-          class="logo-icon"
-          :src="worksData.logo.url"
-          alt="这是全景图logo"
-        />
-        <div
-          v-show="iframeShow"
-          class="popup"
-        >
-          <iframe
-            style="width: 100%; height: 100%;"
-            :src="iframeUrl"
-            frameborder="0"
-            scrolling="auto"
-          ></iframe>
-          <img
-            @click="iframeShow = false"
-            class="cancel"
-            src="@/assets/close.png"
-            alt="取消按钮"
-          />
-        </div>
-        <div class="krpano-list flex-row cen-cen">
-          <div
-            v-for="item in krpanoList"
-            :key="item.id"
-            class="select-item"
-            :style="{ backgroundImage: `url(${item.logo})` }"
-            :class="{ active: item.id === prevKrpano }"
-            @click="selectPreview(item)"
-          ></div>
-        </div>
-      </div>-->
       <iframe
         v-if="dialogVisible"
         frameborder="0"
@@ -164,22 +123,9 @@ export default {
   },
   data() {
     return {
-      iframeUrl: '', //超链接href
-      iframeShow: false, //显示全景器弹窗
       type: 1, //当前编辑模块
-      isShowTip: true, //是否显示预览全景图的提示图片
       krpano: '', //全景对象
-      previewKrpano: '',
       dialogVisible: false, //显示弹窗
-      publicPath: process.env.BASE_URL, //静态资源绝对路径
-      leftStyle: {
-        left: '10px',
-        top: '10px'
-      },
-      rightStyle: {
-        right: '10px',
-        bottom: '10px'
-      },
       form: {
         hlookat: 0.0,
         vlookat: 0.0
@@ -213,60 +159,14 @@ export default {
         this[krpano].set(`plugin[tooltip_${item.spotname}].html`, item.title);
       }, awaitNum);
       //编辑模式
-      if (!this.dialogVisible) {
-        this[krpano].set(`hotspot[${item.spotname}].ondown`, `draghotspot()`);
-      }
-      //预览模式
-      if (this.dialogVisible) {
-        this[krpano].set(
-          `hotspot[${item.spotname}].onclick`,
-          this.setLoad.bind(this, krpano, item)
-        );
-      }
-    },
-    //预览窗口场景列表选择
-    selectPreview(item) {
-      this.setPrevKrpano(item.id);
-      this.previewKrpano.call(
-        `loadpano( ${item.url} , null, MERGE, BLEND(0.3))`
-      );
-      setTimeout(() => {
-        this.initKrpano('previewKrpano');
-      }, 100);
-    },
-    //设置跳转方式和链接
-    setLoad(krpano, item) {
-      let { type, href, hrefType } = item;
-      if (type != 2) {
-        let selectKrpano = this.krpanoList.find(item => item.url === href);
-        this.setPrevKrpano(selectKrpano.id);
-        this[krpano].call(`loadpano( ${href} , null, MERGE, BLEND(0.3))`);
-        setTimeout(() => {
-          this.initKrpano(krpano);
-        }, 100);
-        return;
-      }
-      if (!hrefType || hrefType == 1) {
-        window.open(href);
-      } else if (hrefType == 2) {
-        this.iframeShow = true;
-        this.iframeUrl = href;
-      }
+      this[krpano].set(`hotspot[${item.spotname}].ondown`, `draghotspot()`);
     },
     //初始化场景数据
     initKrpano(obj) {
       //判断当前是预览还是编辑取对应数据
-      let data = this.dialogVisible ? this.previewDetail : this.krpanoDetail;
+      let data = this.krpanoDetail;
       //图片提示时间
       let duration = this.worksData.tip.duration;
-      this.isShowTip = true;
-      setTimeout(() => {
-        this.isShowTip = false;
-      }, duration * 1000);
-      if (this.dialogVisible) {
-        this[obj].set('autorotate.speed', this.worksData.cruise.speed);
-        this[obj].set('autorotate.enabled', this.worksData.cruise.auto);
-      }
       this[obj].set('view.hlookat', data.hlookat);
       this[obj].set('view.vlookat', data.vlookat);
       this[obj].set('view.hlookatmin', data.hlookatmin);
@@ -275,43 +175,19 @@ export default {
       this[obj].set('view.vlookatmax', data.vlookatmax);
       data.hostList.forEach(item => this.setHot(obj, item));
     },
-    //预览全景图渲染完成
-    previewReady(obj) {
-      this.previewKrpano = obj;
-      setTimeout(() => {
-        this.initKrpano('previewKrpano');
-      }, 100);
-    },
     handleClose() {
-      this.iframeUrl = null;
       this.dialogVisible = false;
     },
     //预览初始化
     preview() {
       this.dialogVisible = true;
-      // if (this.previewKrpano) {
-      //   this.isShowTip = true
-      //   this.initKrpano('previewKrpano');
-      //   return;
-      // }
-      // setTimeout(() => {
-      //   embedpano({
-      //     xml: `${this.publicPath}/xml/home.xml`,
-      //     target: 'previewKrpano',
-      //     html5: 'auto',
-      //     id: 'previewObject',
-      //     mobilescale: 1.0,
-      //     passQueryParameters: true,
-      //     onready: this.previewReady
-      //   });
-      // }, 100);
       setTimeout(() => {
         let view = document.getElementById('view');
         view.contentWindow.postMessage(
           this.worksData,
           'http://192.168.103.147:8081'
         );
-      }, 200);
+      }, 100);
     },
     //应用视角到场景
     setInitView() {
@@ -340,19 +216,11 @@ export default {
       }, 100);
     },
     ...mapMutations({
-      setKrpano: 'krpano/SET_EDITKRPANO',
-      setPrevKrpano: 'krpano/SET_PREVKRPANO'
+      setKrpano: 'krpano/SET_EDITKRPANO'
     })
   },
   computed: {
-    ...mapGetters([
-      'krpanoList',
-      'editKrpano',
-      'prevKrpano',
-      'worksData',
-      'krpanoDetail',
-      'previewDetail'
-    ])
+    ...mapGetters(['krpanoList', 'editKrpano', 'worksData', 'krpanoDetail'])
   }
 };
 </script>
@@ -407,11 +275,10 @@ export default {
   .krpano-wrapper {
     display: flex;
     flex-wrap: wrap;
-    padding: 10px;
+    padding: 20px;
     width: 100%;
-    height: 15%;
+    height: 18%;
     min-height: 100px;
-    margin-top: 1%;
     @include border;
     .krpano-item {
       width: 70px;
@@ -444,62 +311,6 @@ export default {
       border-radius: 5px;
       font-size: 12px;
       cursor: pointer;
-    }
-  }
-  #previewKrpano {
-    position: relative;
-    width: 100%;
-    height: 600px;
-    .tip-icon {
-      z-index: 1000;
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      left: 50%;
-      top: 50%;
-      transform: translate3d(-50%, -50%, 0);
-    }
-    .logo-icon {
-      z-index: 1000;
-      position: absolute;
-      width: 200px;
-      height: 100px;
-    }
-    .popup {
-      position: absolute;
-      z-index: 3000;
-      width: 85%;
-      height: 70%;
-      background-color: white;
-      left: 50%;
-      top: 50%;
-      transform: translate3d(-50%, -50%, 0);
-      .cancel {
-        cursor: pointer;
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        top: 0;
-        right: -40px;
-      }
-    }
-    .krpano-list {
-      position: absolute;
-      width: 100%;
-      height: 100px;
-      bottom: 10%;
-      background-color: rgba(7, 17, 27, 0.4);
-      z-index: 1000;
-      .select-item {
-        width: 85px;
-        height: 85px;
-        background-color: white;
-        margin: 0 10px;
-        @include background;
-        &.active {
-          border: 2px solid yellow;
-        }
-      }
     }
   }
 }

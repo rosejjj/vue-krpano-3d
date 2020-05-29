@@ -109,8 +109,11 @@ import LogoEdit from './component/logoEdit';
 import AnimateEdit from './component/animateEdit';
 import CoverEdit from './component/coverEdit';
 import Cruise from './component/cruise';
+import setWorksData from '@/mixins/setWorksData';
 
 export default {
+  name: 'basic',
+  mixins: [setWorksData],
   components: {
     TipEdit,
     LogoEdit,
@@ -167,6 +170,14 @@ export default {
         }
       ]
     };
+  },
+  watch: {
+    switchFrom: {
+      handler(newValue) {
+        this.buildGlobal('switch', newValue);
+      },
+      deep: true
+    }
   }
 };
 </script>

@@ -86,6 +86,7 @@ export default {
     //保存当前视角
     saveView() {
       this.buildWorks(this.form);
+      this.$message.success('应用成功');
     }
   },
   watch: {

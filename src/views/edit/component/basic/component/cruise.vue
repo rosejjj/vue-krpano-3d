@@ -33,12 +33,12 @@
           v-model="roteTime"
         ></el-slider>
       </el-form-item>
-      <el-form-item>
+      <!-- <el-form-item>
         <div class="w100 flex-row sp-be-cen">
           <span>旋转一圈自动跳转下一场景</span>
           <el-checkbox v-model="form.autoLoad"></el-checkbox>
         </div>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button
           @click="save"

@@ -9,12 +9,12 @@ export default {
       );
       let obj = { ...worksData.krpanoList[index], ...form };
       worksData.krpanoList[index] = obj;
+      console.log(obj);
       this.setWorksData(worksData);
     },
     buildGlobal(key, form) {
       let worksData = JSON.parse(JSON.stringify(this.worksData));
       worksData[key] = form;
-      console.log(worksData);
       this.setWorksData(worksData);
     },
     ...mapMutations({

@@ -1,8 +1,6 @@
 <template>
   <div class="edit">
-    <work-code v-show="type === 1"></work-code>
-    <hotspot-edit v-show="type === 2"></hotspot-edit>
-    <perspe v-show="type === 3"></perspe>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -10,11 +8,13 @@
 import HotspotEdit from './component/hotspot';
 import Perspe from './component/perspe';
 import WorkCode from './component/workCode';
+import MusicEdit from './component/musicEdit';
 export default {
   components: {
     HotspotEdit,
     Perspe,
-    WorkCode
+    WorkCode,
+    MusicEdit
   },
   props: {
     type: {

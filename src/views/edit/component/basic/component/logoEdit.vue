@@ -14,6 +14,12 @@
       label-position="top"
     >
       <el-form-item>
+        <div class="w100 flex-row sp-be-cen">
+          <span>LOGO</span>
+          <el-checkbox v-model="form.isShow"></el-checkbox>
+        </div>
+      </el-form-item>
+      <el-form-item>
         <el-upload
           class="avatar-uploader"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -75,6 +81,7 @@ export default {
   data() {
     return {
       form: {
+        isShow: false,
         url: '',
         posType: 1
       },
@@ -85,7 +92,7 @@ export default {
         },
         {
           id: 2,
-          name: '右下'
+          name: '左下'
         }
       ]
     };

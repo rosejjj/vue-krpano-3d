@@ -7,6 +7,14 @@ const state = {
     tipIconMobile: `${process.env.BASE_URL}/img/tip.png`, //移动端提示图片
     tipDuration: 3, //提示持续时间
     workLink: '', //作品链接
+    //全局开关
+    switch: {
+      krpanoSelect: false,
+      isShowTitle: false,
+      isShowShare: false
+    },
+    //是否开启开场动画
+    animateType: false,
     //提示
     tip: {
       pcUrl: `${process.env.BASE_URL}/img/tip.png`,
@@ -37,9 +45,16 @@ const state = {
       {
         id: 1,
         name: '办公室',
-        logo: require('../../assets/test_logo.png'),
+        logo: `${process.env.BASE_URL}/img/test_logo.png`,
         url: `${process.env.BASE_URL}/xml/home.xml`,
         hostList: [], //当前所有热点
+        //音乐数据
+        music: {
+          url: '',
+          name: '',
+          volume: 0,
+          loop: false
+        },
         autoRotate: true,
         hlookat: 0,
         vlookat: 0,
@@ -51,9 +66,16 @@ const state = {
       {
         id: 2,
         name: '雪地',
-        logo: require('../../assets/test1/pano_b.jpg'),
-        url: `${process.env.BASE_URL}/xml/home.xml`,
+        logo: `${process.env.BASE_URL}/img/test1/pano_b.jpg`,
+        url: `${process.env.BASE_URL}/xml/test2.xml`,
         hostList: [],
+        //音乐数据
+        music: {
+          url: '',
+          name: '',
+          volume: 0,
+          loop: false
+        },
         autoRotate: true,
         hlookat: 0,
         vlookat: 0,
@@ -65,9 +87,16 @@ const state = {
       {
         id: 3,
         name: '室外',
-        logo: require('../../assets/test2/mobile_b.jpg'),
-        url: `${process.env.BASE_URL}/xml/home.xml`,
+        logo: `${process.env.BASE_URL}/img/test2/mobile_b.jpg`,
+        url: `${process.env.BASE_URL}/xml/test3.xml`,
         hostList: [],
+        //音乐数据
+        music: {
+          url: '',
+          name: '',
+          volume: 0,
+          loop: false
+        },
         autoRotate: true,
         hlookat: 0,
         vlookat: 0,
@@ -83,19 +112,19 @@ const state = {
     {
       id: 1,
       name: '办公室',
-      logo: require('../../assets/test_logo.png'),
+      logo: `${process.env.BASE_URL}/img/test_logo.png`,
       url: `${process.env.BASE_URL}/xml/home.xml`
     },
     {
       id: 2,
       name: '雪地',
-      logo: require('../../assets/test1/pano_b.jpg'),
+      logo: `${process.env.BASE_URL}/img/test1/pano_b.jpg`,
       url: `${process.env.BASE_URL}/xml/test2.xml`
     },
     {
       id: 3,
       name: '室外',
-      logo: require('../../assets/test2/mobile_b.jpg'),
+      logo: `${process.env.BASE_URL}/img/test2/mobile_b.jpg`,
       url: `${process.env.BASE_URL}/xml/test3.xml`
     }
   ]

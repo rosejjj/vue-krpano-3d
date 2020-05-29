@@ -1,12 +1,13 @@
 <template>
   <div class="list-bar">
-    <div
-      @click="onActive(item.type)"
+    <router-link
+      :to="item.link"
+      tag="div"
+      @click.native="onActive(item.type)"
       v-for="item in list"
       :key="item.type"
-      :class="{ active: item.type === activeType }"
       class="list-item"
-    >{{ item.name }}</div>
+    >{{ item.name }}</router-link>
   </div>
 </template>
 
@@ -18,15 +19,23 @@ export default {
       list: [
         {
           type: 1,
-          name: '基础'
+          name: '基础',
+          link: '/basic'
         },
         {
           type: 2,
-          name: '热点'
+          name: '热点',
+          link: '/hotspot'
         },
         {
           type: 3,
-          name: '视角'
+          name: '视角',
+          link: 'perspe'
+        },
+        {
+          type: 4,
+          name: '音乐',
+          link: 'music'
         }
       ]
     };

@@ -152,8 +152,8 @@ export default {
       isEdit: false, //显示热点编辑
       publicPath: process.env.BASE_URL, //静态资源绝对路径
       form: {
-        url: require('../../../assets/icon/vtourskin_hotspot.png'),
-        href: '', //超链接
+        url: `${this.publicPath}/icon/vtourskin_hotspot.png`,
+        href: `${this.publicPath}/xml/home.xml`, //超链接
         hrefType: '', //超链接弹出方式
         hlookat: 0.0, //水平定位
         vlookat: 0.0, //垂直定位
@@ -178,7 +178,7 @@ export default {
       iconList: [
         {
           id: 1,
-          url: require('../../../assets/icon/vtourskin_hotspot.png'),
+          url: `${this.publicPath}/icon/vtourskin_hotspot.png`,
           name: '图标1',
           style: {
             width: '30px',
@@ -264,8 +264,8 @@ export default {
     //初始化编辑热点
     initEdit() {
       this.form = {
-        url: require('../../../assets/icon/vtourskin_hotspot.png'),
-        href: '', //超链接
+        url: `${this.publicPath}/icon/vtourskin_hotspot.png`,
+        href: `${this.publicPath}/xml/home.xml`, //超链接
         hrefType: '', //超链接弹出方式
         hlookat: this.krpano.get('view.hlookat'), //水平定位
         vlookat: this.krpano.get('view.vlookat'), //垂直定位

@@ -123,10 +123,7 @@
         set(plugin[get(bordername)].html, "真香");
         set(plugin[get(bordername)].visible, true);
         jscall(calc('console.log("border: ' + get(bordername) + '")'));
-  
-  
-  
-  
+
   </action>
   <!-- <hotspot type="image"  url="./img/test_logo.png"  name="xiang"/> -->
   <style 
