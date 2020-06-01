@@ -36,7 +36,7 @@
         ></el-slider>
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="form.keepFov">自动迅游时是否保持初始视角</el-checkbox>
+        <el-checkbox v-model="form.keepFov">自动巡游时是否保持初始视角</el-checkbox>
       </el-form-item>
       <el-form-item>
         <el-button

@@ -50,12 +50,12 @@
           >
             <el-button
               @click="setInitView"
-              v-show="type === 3"
+              v-show="$route.path === '/perspe'"
               class="perspe-button"
               type="primary"
             >设置当前为默认视角</el-button>
             <div
-              v-show="type === 3"
+              v-show="$route.path === '/perspe'"
               class="perspe-box"
             ></div>
           </div>
@@ -128,7 +128,8 @@ export default {
       dialogVisible: false, //显示弹窗
       form: {
         hlookat: 0.0,
-        vlookat: 0.0
+        vlookat: 0.0,
+        fov: 90
       }
     };
   },
@@ -193,6 +194,7 @@ export default {
     setInitView() {
       this.form.hlookat = this.krpano.get('view.hlookat');
       this.form.vlookat = this.krpano.get('view.vlookat');
+      this.form.fov = this.krpano.get('view.fov');
       this.$message.success('保存成功');
       this.buildWorks(this.form);
     },

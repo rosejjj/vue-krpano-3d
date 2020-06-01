@@ -23,7 +23,10 @@
 </template>
 
 <script>
+import setWorksData from '@/mixins/setWorksData.js';
+import { mapGetters } from 'vuex';
 export default {
+  mixins: [setWorksData],
   data() {
     return {
       animateType: true
@@ -32,6 +35,17 @@ export default {
   methods: {
     close() {
       this.$emit('close');
+    }
+  },
+  computed: {
+    ...mapGetters(['worksData'])
+  },
+  watch: {
+    'worksData.animateType': {
+      handler(newValue, oldValue) {
+        this.animateType = newValue;
+      },
+      immediate: true
     }
   }
 };

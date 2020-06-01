@@ -79,12 +79,8 @@ export default {
     formatSeconds(value) {
       let minutes = parseInt(value / 60).toString();
       let seconds = (value % 60).toString().padStart(2, '0');
-      return minutes > 1 ? `${minutes}分${seconds}秒` : `${seconds}秒`;
-    }
-  },
-  watch: {
-    roteTime(value) {
-      this.form.speed = (360 / value).toFixed(1);
+      console.log(minutes, seconds);
+      return minutes > 0 ? `${minutes}分${seconds}秒` : `${seconds}秒`;
     }
   },
   computed: {
@@ -95,6 +91,12 @@ export default {
       handler(newValue, oldValue) {
         this.form = { ...newValue };
         this.roteTime = parseInt(360 / this.form.speed);
+      },
+      immediate: true
+    },
+    roteTime: {
+      handler(newValue, oldValue) {
+        this.form.speed = (360 / newValue).toFixed(1);
       },
       immediate: true
     }

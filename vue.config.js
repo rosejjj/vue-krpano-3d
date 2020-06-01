@@ -5,6 +5,7 @@ module.exports = {
   assetsDir: 'static', // 静态资源目录 (js, css, img, fonts)
   lintOnSave: false, // 是否开启eslint保存检测，有效值：ture | false | 'error'
   devServer: {
+    open: true, //打开浏览器
     compress: true, //开启压缩
     proxy: {
       //只要是包含/api的接口都用node做代理，本地请求路径为aixos设置baseUrl和url，例如"mobile/api/course/recommend"`3.9**/77
