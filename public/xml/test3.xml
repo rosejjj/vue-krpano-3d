@@ -5,7 +5,7 @@
   <image>
     <cube url="../img/test2/mobile_%s.jpg"/>
   </image>
-  <view hfov="180" vfov="180" fov="90"  hlookat="0.0" vlookat="0.0" limitview="range " 
+  <view hfov="180" vfov="180" fov="90"  hlookat="0.0" vlookat="0.0" limitview="range" 
         hlookatmin="-180" hlookatmax="180"  
         vlookatmin="-90" vlookatmax="90"
     />

@@ -13,7 +13,7 @@
 	    width="200"
 	    enabled="false"
 	/> -->
-  <view hfov="180" vfov="180" fov="90"  hlookat="0.0" vlookat="0.0" limitview="range " 
+  <view hfov="180" vfov="180" fov="90"  hlookat="0.0" vlookat="0.0" limitview="range" 
         hlookatmin="-180" hlookatmax="180"  
         vlookatmin="-90" vlookatmax="90"
     />
@@ -100,32 +100,29 @@
         set(plugin[get(tooltipname)].textshadowangle,90);
         set(plugin[get(tooltipname)].enabled,false);
         set(plugin[get(tooltipname)].html, "");
-        txtadd(bordername,'border_', get(name));
+
+
+        
+        
+    
+        
+    <!-- txtadd(bordername,'border_', get(name));
         addplugin(get(bordername));
         txtadd(plugin[get(bordername)].parent, 'hotspot[', get(name), ']');
-        set(plugin[get(tooltipname)].url,'%SWFPATH%/plugins/textfield.swf');
+        set(plugin[get(bordername)].url,'../icon/cancel.png');
         set(plugin[get(bordername)].align, center);
+        set(plugin[get(bordername)].edge, center);
+        set(plugin[get(bordername)].vcenter,true);
         set(plugin[get(bordername)].x, 0);
         set(plugin[get(bordername)].y, 0);
-        set(plugin[get(bordername)].autowidth, true);
-        set(plugin[get(bordername)].autoheight, true);
-        set(plugin[get(bordername)].vcenter,true);
-        set(plugin[get(bordername)].background,false);
-        set(plugin[get(bordername)].roundedge, 20);
-        set(plugin[get(bordername)].backgroundalpha, 1);
-        set(plugin[get(bordername)].border, true);
-        set(plugin[get(bordername)].bordercolor, 0x000000);
-        set(plugin[get(bordername)].borderwidth, 1.0);
-        set(plugin[get(bordername)].shadow, 0.2);
-        set(plugin[get(bordername)].shadowcolor, 0x000000);
-        set(plugin[get(bordername)].shadowalpha, 1.0);
-        set(plugin[get(bordername)].html, "真香");
-        set(plugin[get(bordername)].visible, true);
+        set(plugin[get(bordername)].scale, 0.5);
+        set(plugin[get(bordername)].enabled,false);
+        jscall(calc('console.log("真香")')) -->
   </action>
   <!-- <hotspot type="image"  url="./img/test_logo.png"  name="xiang"/> -->
   <style 
-        name="your_hotspotstyle" 
-        distorted="false" 
-        onloaded="add_all_the_time_tooltip();"
-    />
+    name="your_hotspotstyle" 
+    distorted="false" 
+    onloaded="add_all_the_time_tooltip();"
+  />
 </krpano>
