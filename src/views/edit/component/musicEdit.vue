@@ -109,16 +109,16 @@ export default {
       //背景音乐
       music: {
         url:
-          'https://ws.stream.qqmusic.qq.com/C400002TRY4a3zfxC8.m4a?guid=8471296062&vkey=B67A82022DB6C9514B1C002626F89620FC809584D6E7119BC8C03FB2345609FB75F0EBB5D9143565A8A124F790B661B57E56A3243E72185F&uin=417&fromtag=66',
-        name: '年少有为',
+          'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+        name: '后来遇见他',
         volume: 100,
         loop: false
       },
       //旁白
       narrator: {
         url:
-          'https://ws.stream.qqmusic.qq.com/C400002TRY4a3zfxC8.m4a?guid=8471296062&vkey=B67A82022DB6C9514B1C002626F89620FC809584D6E7119BC8C03FB2345609FB75F0EBB5D9143565A8A124F790B661B57E56A3243E72185F&uin=417&fromtag=66',
-        name: '年少有为翻版',
+          'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+        name: '后来遇见他',
         volume: 100,
         loop: false
       }
@@ -135,6 +135,7 @@ export default {
         this[str] = true;
       } else {
         audio.pause();
+        audio.currentTime = 0;
         this[str] = false;
       }
     },

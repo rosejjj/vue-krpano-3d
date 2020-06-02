@@ -4,13 +4,13 @@
       label-position="top"
       lable-width="80px"
     >
-      <el-form-item label="当前初始视角">
+      <!-- <el-form-item label="当前初始视角">
         <img
           class="view-img"
           src="@/assets/WechatIMG50.jpeg"
           alt="这是视角图片"
         />
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item
         class="p10"
         label="水平视角范围"

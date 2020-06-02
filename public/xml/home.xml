@@ -74,7 +74,6 @@
   <action name="add_all_the_time_tooltip">
     <!-- 生成顶部文字 -->
         txtadd(tooltipname, 'tooltip_', get(name));
-        jscall(calc('console.log("text: ' + get(tooltipname) + '")'));
         addplugin(get(tooltipname));
         txtadd(plugin[get(tooltipname)].parent, 'hotspot[', get(name), ']');
         set(plugin[get(tooltipname)].url,'%SWFPATH%/plugins/textfield.swf');
@@ -122,8 +121,6 @@
         set(plugin[get(bordername)].shadowalpha, 1.0);
         set(plugin[get(bordername)].html, "真香");
         set(plugin[get(bordername)].visible, true);
-        jscall(calc('console.log("border: ' + get(bordername) + '")'));
-
   </action>
   <!-- <hotspot type="image"  url="./img/test_logo.png"  name="xiang"/> -->
   <style 

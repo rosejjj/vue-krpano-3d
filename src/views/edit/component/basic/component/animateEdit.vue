@@ -19,6 +19,13 @@
         ></el-switch>
       </div>
     </div>
+    <div class="text-center mt20">
+      <el-button
+        class="save_btn"
+        @click="save"
+        type="primary"
+      >完成</el-button>
+    </div>
   </div>
 </template>
 
@@ -33,6 +40,11 @@ export default {
     };
   },
   methods: {
+    //完成
+    save() {
+      this.buildGlobal('animateType', this.animateType);
+      this.$message.success('设置成功');
+    },
     close() {
       this.$emit('close');
     }
@@ -72,6 +84,9 @@ export default {
       width: 100%;
       font-size: 14px;
     }
+  }
+  .save_btn {
+    width: 50%;
   }
 }
 </style>

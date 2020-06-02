@@ -286,14 +286,10 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        })
-          .then(res => {
-            this.krpano.call(`removehotspot(${this.form.spotname})`);
-            this.form = this.hostList.find(item => item.spotname === name);
-          })
-          .catch(res => {
-            console.log('继续编辑');
-          });
+        }).then(res => {
+          this.krpano.call(`removehotspot(${this.form.spotname})`);
+          this.form = this.hostList.find(item => item.spotname === name);
+        });
       }
     },
     //设置全景图对应热点

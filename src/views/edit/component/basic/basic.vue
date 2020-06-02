@@ -142,10 +142,10 @@ export default {
           id: 1,
           name: '开场提示'
         },
-        {
-          id: 2,
-          name: '开场封面'
-        },
+        // {
+        //   id: 2,
+        //   name: '开场封面'
+        // },
         {
           id: 3,
           name: '开场动画'

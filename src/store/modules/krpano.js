@@ -37,7 +37,7 @@ const state = {
     //自动巡游
     cruise: {
       auto: true,
-      speed: 30,
+      speed: 12.0,
       autoLoad: true
     },
     //所有场景单独数据
@@ -50,9 +50,17 @@ const state = {
         hostList: [], //当前所有热点
         //音乐数据
         music: {
-          url: '',
-          name: '',
-          volume: 0,
+          url:
+            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+          name: '后来遇见他',
+          volume: 100,
+          loop: false
+        },
+        narrator: {
+          url:
+            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+          name: '后来遇见他',
+          volume: 100,
           loop: false
         },
         autoRotate: true,
@@ -71,9 +79,17 @@ const state = {
         hostList: [],
         //音乐数据
         music: {
-          url: '',
-          name: '',
-          volume: 0,
+          url:
+            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+          name: '后来遇见他',
+          volume: 100,
+          loop: false
+        },
+        narrator: {
+          url:
+            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+          name: '后来遇见他',
+          volume: 100,
           loop: false
         },
         autoRotate: true,
@@ -92,9 +108,17 @@ const state = {
         hostList: [],
         //音乐数据
         music: {
-          url: '',
-          name: '',
-          volume: 0,
+          url:
+            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+          name: '后来遇见他',
+          volume: 100,
+          loop: false
+        },
+        narrator: {
+          url:
+            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+          name: '后来遇见他',
+          volume: 100,
           loop: false
         },
         autoRotate: true,
