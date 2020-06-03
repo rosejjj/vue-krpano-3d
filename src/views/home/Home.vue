@@ -164,9 +164,7 @@ export default {
     },
     //初始化场景数据
     initKrpano(obj) {
-      //判断当前是预览还是编辑取对应数据
       let data = this.krpanoDetail;
-      //图片提示时间
       let duration = this.worksData.tip.duration;
       this[obj].set('view.hlookat', data.hlookat);
       this[obj].set('view.vlookat', data.vlookat);

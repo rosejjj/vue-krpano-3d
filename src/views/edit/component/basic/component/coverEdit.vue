@@ -87,6 +87,7 @@ export default {
   methods: {
     save() {
       this.buildGlobal('cover', this.form);
+      this.$message.success('设置成功');
       this.close();
     },
     close() {

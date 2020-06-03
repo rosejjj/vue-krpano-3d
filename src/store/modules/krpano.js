@@ -1,4 +1,5 @@
 const state = {
+  initData: false, //是否已初始化数据
   editKrpano: 1, //当前编辑场景
   prevKrpano: 1, //当前预览场景
   wordsData: {

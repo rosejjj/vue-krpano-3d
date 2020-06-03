@@ -44,6 +44,7 @@ export default {
     save() {
       this.buildGlobal('animateType', this.animateType);
       this.$message.success('设置成功');
+      this.close();
     },
     close() {
       this.$emit('close');

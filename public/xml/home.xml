@@ -100,12 +100,7 @@
         set(plugin[get(tooltipname)].textshadowangle,90);
         set(plugin[get(tooltipname)].enabled,false);
         set(plugin[get(tooltipname)].html, "");
-
-
-        
-        
     
-        
     <!-- txtadd(bordername,'border_', get(name));
         addplugin(get(bordername));
         txtadd(plugin[get(bordername)].parent, 'hotspot[', get(name), ']');
