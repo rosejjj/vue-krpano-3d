@@ -94,6 +94,11 @@ body::-webkit-scrollbar {
     flex-direction: column;
 }
 
+.end-cen{
+    justify-content: flex-end;
+    align-items: center;
+}
+
 .sp-ar-cen {
     justify-content: space-around;
     align-items: center;

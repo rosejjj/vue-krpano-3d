@@ -62,8 +62,9 @@
           placeholder="为LOGO添加超链接"
         ></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item class="w100 text-center">
         <el-button
+          style="width: 60%"
           @click="save"
           type="primary"
         >完成</el-button>
@@ -100,6 +101,7 @@ export default {
   methods: {
     save() {
       this.buildGlobal('logo', this.form);
+      this.$message.success('设置成功');
       this.close();
     },
     close() {

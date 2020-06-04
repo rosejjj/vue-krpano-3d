@@ -190,8 +190,8 @@ export default {
     display: flex;
     .logo {
       position: relative;
-      width: 200px;
-      height: 200px;
+      min-width: 200px;
+      min-height: 200px;
       border-radius: 10px;
       box-shadow: 0px 0px 20px rgba(7, 17, 27, 0.5);
       background-size: cover;

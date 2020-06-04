@@ -109,7 +109,7 @@ export default {
       //背景音乐
       music: {
         url:
-          'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+          'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
         name: '后来遇见他',
         volume: 100,
         loop: false
@@ -117,7 +117,7 @@ export default {
       //旁白
       narrator: {
         url:
-          'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=6489E99BEA09F56AB555C72C917E4E26F3A46AD521AC2FFA9AA4EE920275B320DE3E678959987826A2DCA72BE7F2D842F5A6702901C72802&uin=417&fromtag=66',
+          'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
         name: '后来遇见他',
         volume: 100,
         loop: false

@@ -3,7 +3,6 @@ export default {
   worksData: state => state.krpano.wordsData,
   editKrpano: state => state.krpano.editKrpano,
   prevKrpano: state => state.krpano.prevKrpano,
-  
   hostList: state => {
     let list = state.krpano.wordsData.krpanoList;
     let activeId = state.krpano.editKrpano;

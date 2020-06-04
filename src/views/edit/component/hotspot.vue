@@ -56,11 +56,16 @@
           </div>
           <div class="item-title">选择热点类型</div>
           <el-form
+            :model="form"
+            :rules="rules"
             class="p10"
             label-position="top"
             label-width="80px"
           >
-            <el-form-item label="热点类型">
+            <el-form-item
+              label="热点类型"
+              prop="type"
+            >
               <el-select
                 v-model="form.type"
                 class="input"
@@ -74,7 +79,10 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="标题">
+            <el-form-item
+              label="标题"
+              prop="title"
+            >
               <el-input
                 v-model="form.title"
                 class="input"
@@ -82,7 +90,7 @@
               ></el-input>
             </el-form-item>
             <el-form-item
-              v-show="form.type == 1"
+              v-if="form.type == 1"
               label="选择目标场景"
             >
               <div class="w100 scene-box">
@@ -97,17 +105,20 @@
               </div>
             </el-form-item>
             <el-form-item
-              v-show="form.type === 2"
+              v-if="form.type === 2"
               label="超链接"
+              prop="href"
             >
               <el-input
+                class="input"
                 v-model="form.href"
                 placeholder="请输入超链接"
               ></el-input>
             </el-form-item>
             <el-form-item
-              v-show="form.type === 2"
+              v-if="form.type === 2"
               label="打开方式"
+              prop="hrefType"
             >
               <el-select
                 v-model="form.hrefType"
@@ -140,6 +151,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import { iconList } from '@/config/iconList';
 
 export default {
   mounted() {
@@ -153,13 +165,13 @@ export default {
       publicPath: process.env.BASE_URL, //静态资源绝对路径
       form: {
         url: `${this.publicPath}/icon/vtourskin_hotspot.png`,
-        href: `${this.publicPath}/xml/home.xml`, //超链接
+        href: '', //超链接
         hrefType: '', //超链接弹出方式
         hlookat: 0.0, //水平定位
         vlookat: 0.0, //垂直定位
         spotname: '', //在全景图中的热点名称
         activeIcon: 1, //当前选中图标
-        activeKrpano: 1, //热点跳转场景id
+        activeKrpano: '', //热点跳转场景id
         type: 1, //当前热点类型
         title: '' //热点标题
       },
@@ -175,17 +187,7 @@ export default {
         }
       ],
       //可选图标
-      iconList: [
-        {
-          id: 1,
-          url: `${this.publicPath}/icon/vtourskin_hotspot.png`,
-          name: '图标1',
-          style: {
-            width: '30px',
-            height: '30px'
-          }
-        }
-      ],
+      iconList: iconList,
       //弹窗对应显示
       hyperList: [
         {
@@ -196,7 +198,20 @@ export default {
           id: 2,
           name: '弹出层打开'
         }
-      ]
+      ],
+      rules: {
+        type: [{ required: true, message: '请选择热点类型', trigger: 'blur' }],
+        href: [{ required: true, message: '请输入超链接', trigger: 'blur' }],
+        title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+        hrefType: [
+          {
+            type: 'number',
+            required: true,
+            message: '请选择弹出方式',
+            trigger: 'blur'
+          }
+        ]
+      }
     };
   },
   methods: {
@@ -225,6 +240,7 @@ export default {
     closeEdit() {
       if (this.isSaveIndex > -1) {
         this.isEdit = false;
+        this.setActiveHost({});
       } else {
         this.$confirm('当前未保存的改动将丢失，确认继续？', {
           confirmButtonText: '确定',
@@ -264,14 +280,14 @@ export default {
     //初始化编辑热点
     initEdit() {
       this.form = {
-        url: `${this.publicPath}/icon/vtourskin_hotspot.png`,
-        href: `${this.publicPath}/xml/home.xml`, //超链接
+        url: this.iconList[0].url,
+        href: '', //超链接
         hrefType: '', //超链接弹出方式
         hlookat: this.krpano.get('view.hlookat'), //水平定位
         vlookat: this.krpano.get('view.vlookat'), //垂直定位
         spotname: `spotname_${this.hostList.length + 1}`, //在全景图中的热点名称
         activeIcon: 1, //当前选中图标
-        activeKrpano: 1, //热点跳转场景id
+        activeKrpano: '', //热点跳转场景id
         type: 1, //当前热点类型
         title: '' //热点标题
       };
@@ -302,7 +318,7 @@ export default {
       this[krpano].set(`hotspot[${item.spotname}].url`, item.url);
       this[krpano].set(`hotspot[${item.spotname}].ath`, item.hlookat);
       this[krpano].set(`hotspot[${item.spotname}].atv`, item.vlookat);
-      this[krpano].set(`hotspot[${item.spotname}].scale`, 0.6);
+      this[krpano].set(`hotspot[${item.spotname}].scale`, 0.8);
       setTimeout(() => {
         this[krpano].set(`plugin[tooltip_${item.spotname}].html`, item.title);
       }, awaitNum);
@@ -324,6 +340,12 @@ export default {
       this.form.activeIcon = item.id;
       this.form.url = item.url;
       this.krpano.set(`hotspot[${this.form.spotname}].url`, this.form.url);
+      setTimeout(() => {
+        this.setValue(
+          `plugin[tooltip_${this.form.spotname}].html`,
+          this.form.title
+        );
+      }, 100);
     },
     //热点对应场景
     setKrpano(item) {
@@ -331,16 +353,22 @@ export default {
       this.form.href = item.url;
     },
     ...mapMutations({
-      setWorksData: 'krpano/SET_WORKSDATA'
+      setWorksData: 'krpano/SET_WORKSDATA',
+      setActiveHost: 'active/SET_ACTIVEHOST'
     })
   },
   watch: {
     'form.title'(value) {
       this.setValue(`plugin[tooltip_${this.form.spotname}].html`, value);
+    },
+    activeHost(form) {
+      this.form = { ...form };
+      this.isEdit = true;
     }
   },
   computed: {
     ...mapGetters(['krpanoList', 'hostList', 'worksData', 'editKrpano']),
+    ...mapGetters('active', ['activeHost']),
     //当前编辑热点是否有保存
     isSaveIndex() {
       let index = this.hostList.findIndex(
@@ -429,7 +457,7 @@ export default {
         .icon-wrapper {
           width: 40px;
           height: 40px;
-          margin: 2px;
+          margin: 1px;
           display: flex;
           justify-content: center;
           align-items: center;

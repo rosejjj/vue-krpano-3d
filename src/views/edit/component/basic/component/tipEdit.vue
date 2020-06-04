@@ -67,11 +67,15 @@
           :marks="marks"
         ></el-slider>
       </el-form-item>
-      <el-form-item style="margin-top: 50px">
+      <el-form-item
+        style="margin-top: 40px"
+        class="w100 text-center"
+      >
         <el-button
+          style="width: 60%"
           @click="save"
           type="primary"
-        >保存</el-button>
+        >完成</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -101,6 +105,7 @@ export default {
   methods: {
     save() {
       this.buildGlobal('tip', this.form);
+      this.$message.success('设置成功');
       this.close();
     },
     close() {

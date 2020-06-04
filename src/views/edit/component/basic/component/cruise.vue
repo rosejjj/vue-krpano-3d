@@ -39,8 +39,9 @@
           <el-checkbox v-model="form.autoLoad"></el-checkbox>
         </div>
       </el-form-item>
-      <el-form-item>
+      <el-form-item class="w100 text-center">
         <el-button
+          style="width: 60%"
           @click="save"
           type="primary"
         >完成</el-button>
@@ -69,6 +70,7 @@ export default {
   methods: {
     save() {
       this.buildGlobal('cruise', this.form);
+      this.$message.success('设置成功');
       this.close();
     },
     close() {

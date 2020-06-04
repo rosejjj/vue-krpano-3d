@@ -4,35 +4,7 @@
       style="height: 40px"
       class="header"
     >
-      <el-row
-        type="flex"
-        justify="space-between"
-        align="center"
-      >
-        <el-col
-          class="text-left"
-          :span="3"
-        >
-          <el-button type="text">返回</el-button>
-        </el-col>
-        <el-col
-          class="text-center"
-          :span="18"
-        >室内全景图</el-col>
-        <el-col
-          class="text-right"
-          :span="3"
-        >
-          <el-button
-            @click="save"
-            type="text"
-          >保存</el-button>
-          <el-button
-            @click="preview"
-            type="text"
-          >预览</el-button>
-        </el-col>
-      </el-row>
+      <my-header @preview="preview"></my-header>
     </el-header>
     <el-container>
       <el-aside width="50px">
@@ -73,17 +45,22 @@
               :class="{ active: item.id === editKrpano }"
             ></div>
             <div class="text mt10">{{ item.name }}</div>
+            <img
+              class="close-icon"
+              src="@/assets/close-face.png"
+            />
           </div>
           <div class="add_btn flex-colum cen-cen">
+            <img
+              class="add_icon"
+              src="@/assets/add-icon.png"
+            />
             <div class="mt10">添加场景</div>
           </div>
         </div>
       </el-main>
       <el-aside width="250px">
-        <edit
-          :type="type"
-          class="edit"
-        ></edit>
+        <edit class="edit"></edit>
       </el-aside>
     </el-container>
     <el-dialog
@@ -112,6 +89,7 @@ import Edit from '@/views/edit/edit';
 import Basic from '../edit/component/basic/basic';
 import { mapGetters, mapMutations } from 'vuex';
 import setWorksData from '@/mixins/setWorksData.js';
+import MyHeader from './components/my-header';
 
 export default {
   name: 'home',
@@ -119,11 +97,11 @@ export default {
   components: {
     ListBar,
     Edit,
-    Basic
+    Basic,
+    MyHeader
   },
   data() {
     return {
-      type: 1, //当前编辑模块
       krpano: '', //全景对象
       dialogVisible: false, //显示弹窗
       form: {
@@ -159,8 +137,11 @@ export default {
       setTimeout(() => {
         this[krpano].set(`plugin[tooltip_${item.spotname}].html`, item.title);
       }, awaitNum);
-      //编辑模式
       this[krpano].set(`hotspot[${item.spotname}].ondown`, `draghotspot()`);
+      this[krpano].set(
+        `hotspot[${item.spotname}].onclick`,
+        this.setActiveHost.bind(this, item)
+      );
     },
     //初始化场景数据
     initKrpano(obj) {
@@ -196,12 +177,17 @@ export default {
       this.$message.success('保存成功');
       this.buildWorks(this.form);
     },
-    save() {
-      this.$message.success('保存成功');
-    },
-    //当前活跃编辑
+    //侧边栏切换
     editActive(type) {
-      this.type = type;
+      let data = this.krpanoDetail;
+      let hostSpotShow = type === 2;
+      data.hostList.forEach(item => {
+        this.krpano.set(`hotspot[${item.spotname}].visible`, hostSpotShow);
+        this.krpano.set(
+          `plugin[tooltip_${item.spotname}].visible`,
+          hostSpotShow
+        );
+      });
     },
     //绘制完成回调
     krpanoReady(obj) {
@@ -216,7 +202,8 @@ export default {
       }, 100);
     },
     ...mapMutations({
-      setKrpano: 'krpano/SET_EDITKRPANO'
+      setKrpano: 'krpano/SET_EDITKRPANO',
+      setActiveHost: 'active/SET_ACTIVEHOST'
     })
   },
   computed: {
@@ -241,6 +228,7 @@ export default {
   .krpano-show {
     width: 100%;
     height: 83%;
+    padding: 15px;
     @include border;
     #krpano {
       position: relative;
@@ -281,6 +269,7 @@ export default {
     min-height: 100px;
     @include border;
     .krpano-item {
+      position: relative;
       width: 70px;
       margin-right: 10px;
       cursor: pointer;
@@ -302,6 +291,14 @@ export default {
         text-align: center;
         width: 70px;
       }
+      .close-icon {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        right: -7.5px;
+        top: -7.5px;
+        z-index: 1000;
+      }
     }
     .add_btn {
       font-size: 13px;
@@ -311,6 +308,10 @@ export default {
       border-radius: 5px;
       font-size: 12px;
       cursor: pointer;
+      .add_icon {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
 }

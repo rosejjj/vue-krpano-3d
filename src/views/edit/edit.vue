@@ -16,12 +16,6 @@ export default {
     WorkCode,
     MusicEdit
   },
-  props: {
-    type: {
-      type: Number,
-      default: 1
-    }
-  }
 };
 </script>
 
