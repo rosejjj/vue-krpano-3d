@@ -1,5 +1,5 @@
 export default {
-  krpanoList: state => state.krpano.krpanoList,
+  krpanoList: state => state.krpano.wordsData.krpanoList,
   worksData: state => state.krpano.wordsData,
   editKrpano: state => state.krpano.editKrpano,
   prevKrpano: state => state.krpano.prevKrpano,

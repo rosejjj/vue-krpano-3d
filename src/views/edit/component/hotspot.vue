@@ -362,8 +362,10 @@ export default {
       this.setValue(`plugin[tooltip_${this.form.spotname}].html`, value);
     },
     activeHost(form) {
-      this.form = { ...form };
-      this.isEdit = true;
+      if (JSON.stringify(form) !== '{}') {
+        this.form = { ...form };
+        this.isEdit = true;
+      }
     }
   },
   computed: {

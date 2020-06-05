@@ -12,7 +12,7 @@
       :src="narrator.url"
       :loop="narrator.loop"
     >真香</audio>
-    <div class="mb20 w100 bg-box">
+    <div class="mb20 w100">
       <div class="form-item flex-row sp-be-cen">
         <span>背景音乐</span>
         <el-button
@@ -48,8 +48,22 @@
         <span>循环播放</span>
         <el-checkbox v-model="music.loop"></el-checkbox>
       </div>
+      <div class="form-item flex-row sp-be-cen">
+        <span>应用到:</span>
+        <el-button
+          @click="setMusic(true)"
+          size="mini"
+          type="primary"
+        >选择场景</el-button>
+      </div>
     </div>
-    <div class="w100">
+    <div
+      style="width: 100%; height: 2px; border-top: 1px solid rgba(0,0,0); border-bottom: 1px solid rgba(75,75,75)"
+    ></div>
+    <div
+      style="margin-top: 25px"
+      class="w100"
+    >
       <div class="form-item flex-row sp-be-cen">
         <span>语言讲解</span>
         <el-button
@@ -87,23 +101,71 @@
       </div>
     </div>
     <div class="form-item flex-row sp-be-cen">
+      <span>应用到:</span>
       <el-button
-        @click="save"
-        class="w100"
+        @click="setMusic(false)"
         type="primary"
-      >应用到此场景</el-button>
+        size="mini"
+      >选择场景</el-button>
     </div>
+    <el-dialog
+      :modal-append-to-body="false"
+      :visible.sync="dialogVisible"
+      title="选择需要应用到的场景"
+    >
+      <div style="min-height: 400px">
+        <div class="krpano-wrapper">
+          <div
+            v-for="(item,index) in newKrpanoList"
+            :key="item.id"
+            class="krpano-item"
+          >
+            <div
+              @click.stop="selectKrpano(index)"
+              :class="{ active: item.status }"
+              :style="{ backgroundImage: `url(${item.logo})` }"
+              class="bg-img"
+            ></div>
+            <div
+              style="color: black"
+              class="text-center mt10"
+            >{{ item.name }}</div>
+          </div>
+        </div>
+      </div>
+      <div
+        slot="footer"
+        class="w100 flex-row cen-cen"
+      >
+        <el-button
+          @click="saveMusic"
+          :disabled="!someSelect"
+          style="width: 120px"
+          size="small"
+          type="danger"
+        >应用</el-button>
+        <el-checkbox
+          v-model="selectAll"
+          class="select_btn"
+        >全选</el-checkbox>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import setWorksData from '@/mixins/setWorksData.js';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'music-edit',
   mixins: [setWorksData],
   data() {
     return {
+      isMusicEdit: false, //是否正在应用设置音乐
+      newKrpanoList: [], //当前选择的场景
+      selectAll: false, //选择全部
+      dialogVisible: false, //场景弹窗
       isPlay: false,
       isNarrator: false,
       //背景音乐
@@ -125,6 +187,16 @@ export default {
     };
   },
   methods: {
+    selectKrpano(index) {
+      let status = this.newKrpanoList[index].status;
+      this.$set(this.newKrpanoList[index], 'status', !status);
+    },
+    //设置场景音乐
+    setMusic(isMusic) {
+      this.isMusicEdit = isMusic;
+      this.dialogVisible = true;
+      this.newKrpanoList.forEach(item => (item.status = false));
+    },
     setValue(obj, key, value) {
       this.$refs[obj][key] = key == 'volume' ? value / 100 : value;
     },
@@ -139,10 +211,24 @@ export default {
         this[str] = false;
       }
     },
-    save() {
-      this.buildWorks({ music: this.music });
-      this.buildWorks({ narrator: this.narrator });
-      this.$message.success('应用成功');
+    //多场景配置音乐或旁白
+    saveMusic() {
+      let form = this.isMusicEdit
+        ? { music: this.music }
+        : { narrator: this.narrator };
+      this.newKrpanoList.forEach(item => {
+        if (item.status) {
+          this.buildWorks(form, item.id);
+        }
+      });
+      this.$message.success('设置成功');
+      this.dialogVisible = false;
+    }
+  },
+  computed: {
+    ...mapGetters(['krpanoList']),
+    someSelect() {
+      return this.newKrpanoList.some(item => item.status === true);
     }
   },
   watch: {
@@ -157,6 +243,22 @@ export default {
     },
     'narrator.loop'(value) {
       this.setValue('narrator', 'loop', value);
+    },
+    dialogVisible(status) {
+      if (status) {
+        this.newKrpanoList = this.krpanoList.concat([]);
+      }
+    },
+    selectAll(status) {
+      if (status) {
+        this.newKrpanoList.forEach(item => (item.status = status));
+      }
+    },
+    newKrpanoList: {
+      handler(newValue) {
+        this.selectAll = newValue.every(item => item.status === true);
+      },
+      deep: true
     }
   }
 };
@@ -170,9 +272,6 @@ export default {
   .form-item {
     margin-bottom: 20px;
     width: 100%;
-  }
-  .bg-box {
-    border-bottom: 2px solid white;
   }
   .music {
     padding: 0 10px;
@@ -201,6 +300,32 @@ export default {
         margin-top: 2px;
       }
     }
+  }
+
+  .krpano-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    .krpano-item {
+      width: 84px;
+      margin: 10px 5px 0;
+      cursor: pointer;
+      .bg-img {
+        box-sizing: border-box;
+        width: 80px;
+        height: 80px;
+        @include background;
+        &.active {
+          border: 2px solid yellow;
+        }
+      }
+    }
+  }
+  .select_btn {
+    position: absolute;
+    left: 30px;
+    bottom: 20px;
   }
 }
 </style>

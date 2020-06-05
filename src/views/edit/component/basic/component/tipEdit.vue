@@ -14,50 +14,38 @@
       label-position="top"
     >
       <el-form-item label="桌面端">
-        <el-upload
-          class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img
-            v-if="form.pcUrl"
-            :src="form.pcUrl"
-            class="avatar"
-          />
-          <i
-            v-else
-            class="el-icon-plus avatar-uploader-icon"
-          ></i>
+        <img
+          v-if="form.pcUrl"
+          :src="form.pcUrl"
+          class="tip-avatar"
+        />
+        <div class="w100 flex-row sp-be-cen mt10">
           <div
             class="el-upload__tip"
             slot="tip"
           >建议尺寸 300 X 300</div>
-        </el-upload>
+          <el-button
+            size="small"
+            type="primary"
+          >选择图片</el-button>
+        </div>
       </el-form-item>
       <el-form-item label="移动端">
-        <el-upload
-          class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img
-            v-if="form.mobileUrl"
-            :src="form.mobileUrl"
-            class="avatar"
-          />
-          <i
-            v-else
-            class="el-icon-plus avatar-uploader-icon"
-          ></i>
+        <img
+          v-if="form.mobileUrl"
+          :src="form.mobileUrl"
+          class="tip-avatar"
+        />
+        <div class="w100 flex-row sp-be-cen mt10">
           <div
             class="el-upload__tip"
             slot="tip"
           >建议尺寸 300 X 300</div>
-        </el-upload>
+          <el-button
+            size="small"
+            type="primary"
+          >选择图片</el-button>
+        </div>
       </el-form-item>
       <el-form-item label="显示时间(秒)">
         <el-slider
@@ -142,6 +130,10 @@ export default {
       height: 18px;
       cursor: pointer;
     }
+  }
+  .tip-avatar {
+    width: 210px;
+    height: 210px;
   }
 }
 </style>

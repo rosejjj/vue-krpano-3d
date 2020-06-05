@@ -32,32 +32,7 @@
             ></div>
           </div>
         </div>
-        <div class="krpano-wrapper">
-          <div
-            v-for="item in krpanoList"
-            :key="item.spotname"
-            class="krpano-item"
-            @click="setItem(item)"
-          >
-            <div
-              :style="{ backgroundImage: `url(${item.logo})` }"
-              class="logo"
-              :class="{ active: item.id === editKrpano }"
-            ></div>
-            <div class="text mt10">{{ item.name }}</div>
-            <img
-              class="close-icon"
-              src="@/assets/close-face.png"
-            />
-          </div>
-          <div class="add_btn flex-colum cen-cen">
-            <img
-              class="add_icon"
-              src="@/assets/add-icon.png"
-            />
-            <div class="mt10">添加场景</div>
-          </div>
-        </div>
+        <krpano-list @setItem="setItem"></krpano-list>
       </el-main>
       <el-aside width="250px">
         <edit class="edit"></edit>
@@ -84,12 +59,13 @@
 </template>
 
 <script>
-import ListBar from '@/views/list-bar/list-bar';
+import ListBar from '../listBar/listBar';
 import Edit from '@/views/edit/edit';
 import Basic from '../edit/component/basic/basic';
 import { mapGetters, mapMutations } from 'vuex';
 import setWorksData from '@/mixins/setWorksData.js';
-import MyHeader from './components/my-header';
+import MyHeader from './components/myHeader';
+import KrpanoList from './components/krpanoList';
 
 export default {
   name: 'home',
@@ -98,7 +74,8 @@ export default {
     ListBar,
     Edit,
     Basic,
-    MyHeader
+    MyHeader,
+    KrpanoList
   },
   data() {
     return {
@@ -192,6 +169,7 @@ export default {
     //绘制完成回调
     krpanoReady(obj) {
       this.krpano = obj;
+      this.setInit(true);
     },
     //设置编辑场景
     setItem(item) {
@@ -203,11 +181,12 @@ export default {
     },
     ...mapMutations({
       setKrpano: 'krpano/SET_EDITKRPANO',
-      setActiveHost: 'active/SET_ACTIVEHOST'
+      setActiveHost: 'active/SET_ACTIVEHOST',
+      setInit: 'active/SET_ISINIT'
     })
   },
   computed: {
-    ...mapGetters(['krpanoList', 'editKrpano', 'worksData', 'krpanoDetail'])
+    ...mapGetters(['editKrpano', 'worksData', 'krpanoDetail'])
   }
 };
 </script>
@@ -257,60 +236,6 @@ export default {
         bottom: 50%;
         transform: translate3D(-50%, 100px, 0);
         z-index: 1000;
-      }
-    }
-  }
-  .krpano-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
-    width: 100%;
-    height: 18%;
-    min-height: 100px;
-    @include border;
-    .krpano-item {
-      position: relative;
-      width: 70px;
-      margin-right: 10px;
-      cursor: pointer;
-      .logo {
-        width: 70px;
-        height: 70px;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
-        &.active {
-          border: 2px solid yellow;
-        }
-      }
-      .text {
-        font-size: 12px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        line-height: 16px;
-        text-align: center;
-        width: 70px;
-      }
-      .close-icon {
-        position: absolute;
-        width: 15px;
-        height: 15px;
-        right: -7.5px;
-        top: -7.5px;
-        z-index: 1000;
-      }
-    }
-    .add_btn {
-      font-size: 13px;
-      width: 70px;
-      height: 70px;
-      border: 1px dashed white;
-      border-radius: 5px;
-      font-size: 12px;
-      cursor: pointer;
-      .add_icon {
-        width: 18px;
-        height: 18px;
       }
     }
   }

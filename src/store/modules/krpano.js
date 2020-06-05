@@ -1,13 +1,19 @@
+import { Message } from 'element-ui';
+
 const state = {
   initData: false, //是否已初始化数据
   editKrpano: 1, //当前编辑场景
-  prevKrpano: 1, //当前预览场景
   wordsData: {
     initKrpano: 1, //初始化场景
-    tipIconPc: `${process.env.BASE_URL}/img/tip.png`, //pc端提示图片
-    tipIconMobile: `${process.env.BASE_URL}/img/tip.png`, //移动端提示图片
-    tipDuration: 3, //提示持续时间
-    workLink: '', //作品链接
+    workLink: 'https://www.baidu.com', //作品链接
+    code: 'https://ssl-static.720static.com/imgs/32j4Y2lC5oDk.png',
+    //信息设置
+    basic: {
+      type: 1,
+      logo: `${process.env.BASE_URL}/img/WechatIMG50.jpeg`,
+      name: '测试全景',
+      desc: '描述' //全景描述
+    },
     //全局开关
     switch: {
       krpanoSelect: false,
@@ -131,28 +137,7 @@ const state = {
         vlookatmax: 90
       }
     ]
-  },
-  krpanoList: [
-    //当前可用的所有场景
-    {
-      id: 1,
-      name: '办公室',
-      logo: `${process.env.BASE_URL}/img/test_logo.png`,
-      url: `${process.env.BASE_URL}/xml/home.xml`
-    },
-    {
-      id: 2,
-      name: '雪地',
-      logo: `${process.env.BASE_URL}/img/test1/pano_b.jpg`,
-      url: `${process.env.BASE_URL}/xml/test2.xml`
-    },
-    {
-      id: 3,
-      name: '室外',
-      logo: `${process.env.BASE_URL}/img/test2/mobile_b.jpg`,
-      url: `${process.env.BASE_URL}/xml/test3.xml`
-    }
-  ]
+  }
 };
 
 const mutations = {
@@ -161,13 +146,73 @@ const mutations = {
   },
   SET_EDITKRPANO(state, editKrpano) {
     state.editKrpano = editKrpano;
-  },
-  SET_PREVKRPANO(state, prevKrpano) {
-    state.prevKrpano = prevKrpano;
   }
 };
 
-const actions = {};
+const actions = {
+  addKrpano({ commit, state }, selectList) {
+    return new Promise((resolve, reject) => {
+      let isRepeat = false;
+      let wordsData = JSON.parse(JSON.stringify(state.wordsData));
+      wordsData.krpanoList.forEach(item => {
+        let index = selectList.findIndex(krpano => krpano.id === item.id);
+        isRepeat = index > -1;
+      });
+      if (!isRepeat) {
+        selectList.forEach(item => {
+          let newKrpano = {
+            ...item,
+            hostList: [], //当前所有热点
+            //音乐数据
+            music: {
+              url: '',
+              name: '',
+              volume: 100,
+              loop: false
+            },
+            narrator: {
+              url: '',
+              name: '',
+              volume: 100,
+              loop: false
+            },
+            autoRotate: true,
+            hlookat: 0,
+            vlookat: 0,
+            hlookatmin: -180,
+            hlookatmax: 180,
+            vlookatmin: -90,
+            vlookatmax: 90
+          };
+          wordsData.krpanoList.push(newKrpano);
+        });
+        commit('SET_WORKSDATA', wordsData);
+        resolve(wordsData);
+      } else {
+        Message({
+          message: '已有素材存在列表中，请重新选择',
+          type: 'error',
+          duration: 3 * 1000
+        });
+        reject(wordsData);
+      }
+    });
+  },
+  deleteKrpano({ commit, state }, krpano) {
+    let wordsData = JSON.parse(JSON.stringify(state.wordsData));
+    if (wordsData.krpanoList.length === 1) {
+      Message({
+        message: '最少保留一个初始场景',
+        type: 'error',
+        duration: 3 * 1000
+      });
+      return;
+    }
+    let index = wordsData.krpanoList.findIndex(item => item.id === krpano.id);
+    wordsData.krpanoList.splice(index, 1);
+    commit('SET_WORKSDATA', wordsData);
+  }
+};
 
 export default {
   namespaced: true,

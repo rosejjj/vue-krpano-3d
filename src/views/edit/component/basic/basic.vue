@@ -11,12 +11,20 @@
             class="logo"
             :style="{ backgroundImage: `url(${form.logo})` }"
           >
-            <el-button
-              class="btn"
-              size="small"
-              type="primary"
-            >修改封面</el-button>
-            <div class="text">建议尺寸 512 X 512</div>
+            <el-upload
+              :show-file-list="false"
+              accept=".jpg, .png, .gif, jpeg"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-success="handleSuccess"
+              :before-upload="beforeUpload"
+            >
+              <el-button
+                class="btn"
+                size="small"
+                type="primary"
+              >修改封面</el-button>
+              <div class="text">建议尺寸 512 X 512</div>
+            </el-upload>
           </div>
           <div class="basic-form">
             <el-select
@@ -110,6 +118,7 @@ import AnimateEdit from './component/animateEdit';
 import CoverEdit from './component/coverEdit';
 import Cruise from './component/cruise';
 import setWorksData from '@/mixins/setWorksData';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'basic',
@@ -171,13 +180,34 @@ export default {
       ]
     };
   },
+  methods: {
+    handleSuccess(res) {
+      this.form.logo = require('../../../../assets/WechatIMG50.jpeg');
+    },
+    beforeUpload(res) {
+      let is5M = res.size / 1024 / 1024 < 0.5;
+      if (is5M) this.$message.warning('上传文件不能大于500kb');
+      return is5M;
+    }
+  },
   watch: {
     switchFrom: {
       handler(newValue) {
         this.buildGlobal('switch', newValue);
       },
       deep: true
+    },
+    'worksData.basic': {
+      handler(newValue) {
+        if (!this.isInit) {
+          this.form = { ...newValue };
+        }
+      },
+      immediate: true
     }
+  },
+  computed: {
+    ...mapGetters('active', ['isInit'], ['worksData'])
   }
 };
 </script>

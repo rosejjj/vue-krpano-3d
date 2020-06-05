@@ -16,31 +16,22 @@
       <el-form-item>
         <div class="w100 flex-row sp-be-cen">
           <span>LOGO</span>
-          <el-checkbox v-model="form.isShow"></el-checkbox>
+          <el-checkbox v-model="form.isShow">显示LOGO</el-checkbox>
         </div>
       </el-form-item>
       <el-form-item>
-        <el-upload
-          class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img
-            v-if="form.url"
-            :src="form.url"
-            class="avatar"
-          />
-          <i
-            v-else
-            class="el-icon-plus avatar-uploader-icon"
-          ></i>
-          <div
-            class="el-upload__tip"
-            slot="tip"
-          >建议尺寸 300 X 300</div>
-        </el-upload>
+        <img
+          v-if="form.url"
+          :src="form.url"
+          class="logo-avatar"
+        />
+        <div class="w100 flex-row sp-be-cen mt10">
+          <div class="el-upload__tip white">建议尺寸 300 X 300</div>
+          <el-button
+            size="small"
+            type="primary"
+          >选择图片</el-button>
+        </div>
       </el-form-item>
       <el-form-item label="显示位置">
         <el-radio-group v-model="form.posType">
@@ -138,6 +129,10 @@ export default {
       height: 18px;
       cursor: pointer;
     }
+  }
+  .logo-avatar {
+    width: 210px;
+    height: 210px;
   }
 }
 </style>
