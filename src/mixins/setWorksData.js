@@ -17,7 +17,7 @@ export default {
     //设置对应全局属性
     buildGlobal(key, form) {
       let worksData = JSON.parse(JSON.stringify(this.worksData));
-      worksData[key] = form;
+      worksData[key] = { ...form };
       this.setWorksData(worksData);
     },
     ...mapMutations({

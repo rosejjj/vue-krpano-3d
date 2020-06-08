@@ -28,6 +28,7 @@
         <div class="w100 flex-row sp-be-cen mt10">
           <div class="el-upload__tip white">建议尺寸 300 X 300</div>
           <el-button
+            @click="selectVisiable = true"
             size="small"
             type="primary"
           >选择图片</el-button>
@@ -61,17 +62,28 @@
         >完成</el-button>
       </el-form-item>
     </el-form>
+    <select-image
+      ref="selectImage"
+      :selectVisiable="selectVisiable"
+      @close="selectVisiable = false"
+      @selectItem="selectItem"
+    ></select-image>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import setWorksData from '@/mixins/setWorksData.js';
+import SelectImage from '@/components/selectImage/selectImage';
 
 export default {
   mixins: [setWorksData],
+  components: {
+    SelectImage
+  },
   data() {
     return {
+      selectVisiable: false,
       form: {
         isShow: false,
         url: '',
@@ -95,6 +107,10 @@ export default {
       this.$message.success('设置成功');
       this.close();
     },
+    selectItem(item) {
+      this.$refs.selectImage.clearCurrentRow();
+      this.form.url = item.logo;
+    },
     close() {
       this.$emit('close');
     },
@@ -102,12 +118,14 @@ export default {
     beforeAvatarUpload() {}
   },
   computed: {
-    ...mapGetters(['worksData'])
+    ...mapGetters('active', ['isInit'], ['worksData'])
   },
   watch: {
     'worksData.logo': {
       handler(newValue, oldValue) {
-        this.form = { ...newValue };
+        if (!this.isInit) {
+          this.form = { ...newValue };
+        }
       },
       immediate: true
     }

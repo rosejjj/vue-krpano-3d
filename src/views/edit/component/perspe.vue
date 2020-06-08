@@ -50,6 +50,7 @@
 
 <script>
 import setWorksData from '@/mixins/setWorksData.js';
+import { mapGetters } from 'vuex';
 
 export default {
   mixins: [setWorksData],
@@ -57,6 +58,9 @@ export default {
     setTimeout(() => {
       this.krpano = document.getElementById('krpanoSWFObject');
     }, 500);
+  },
+  created() {
+    this.initPerspe();
   },
   data() {
     return {
@@ -73,6 +77,24 @@ export default {
     };
   },
   methods: {
+    initPerspe() {
+      let {
+        hlookatmin,
+        hlookatmax,
+        vlookatmin,
+        vlookatmax,
+        keepFov
+      } = this.krpanoDetail;
+      this.form = {
+        hlookatmin, //水平最小视角
+        hlookatmax, //水平最大视角
+        vlookatmin, //垂直最小视角
+        vlookatmax, //垂直最大视角
+        keepFov //迅游时是否保持初始视角
+      };
+      this.hlookatRanger = [hlookatmin, hlookatmax];
+      this.vlookatRanger = [vlookatmin, vlookatmax];
+    },
     //通用设置krpano属性
     setValue(key, value) {
       this.krpano.call(`set(${key}, ${value})`);
@@ -88,6 +110,9 @@ export default {
       this.buildWorks(this.form);
       this.$message.success('应用成功');
     }
+  },
+  computed: {
+    ...mapGetters(['krpanoDetail'])
   },
   watch: {
     hlookatRanger(value) {

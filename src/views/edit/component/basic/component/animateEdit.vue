@@ -51,12 +51,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['worksData'])
+    ...mapGetters('active', ['isInit'], ['worksData'])
   },
   watch: {
     'worksData.animateType': {
       handler(newValue, oldValue) {
-        this.animateType = newValue;
+        if (!this.isInit) {
+          this.animateType = newValue;
+        }
       },
       immediate: true
     }

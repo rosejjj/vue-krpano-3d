@@ -2,13 +2,11 @@
   <div class="music-edit">
     <audio
       ref="music"
-      style="display: none"
       :src="music.url"
       :loop="music.loop"
     >真香</audio>
     <audio
       ref="narrator"
-      style="display: none"
       :src="narrator.url"
       :loop="narrator.loop"
     >真香</audio>
@@ -16,21 +14,35 @@
       <div class="form-item flex-row sp-be-cen">
         <span>背景音乐</span>
         <el-button
+          @click="() => { isMusicEdit = true; selectVisiable = true }"
           size="small"
           type="primary"
         >选择音乐</el-button>
       </div>
-      <div class="form-item music flex-row -cen mt20">
-        <img
-          @click="startMusic('music', 'isPlay')"
-          style="width: 35px; height: 35px"
-          :src="isPlay ?  require('@/assets/icon/stop.png') : require('@/assets/icon/play.png') "
-          alt="播放图标"
-        />
-        <div class="music-data">
-          <div class="music-name">{{ music.name }}</div>
-          <div class="music-btn">删除</div>
+      <div class="form-item music">
+        <div
+          v-if="music.url"
+          class="w100 h100 flex-row -cen"
+        >
+          <img
+            @click="startMusic('music', 'isPlay')"
+            style="width: 35px; height: 35px"
+            :src="isPlay ?  require('@/assets/icon/stop.png') : require('@/assets/icon/play.png') "
+            alt="播放图标"
+          />
+          <div class="music-data">
+            <div class="music-name">{{ music.name }}</div>
+            <div
+              @click="deleteMusic('music')"
+              class="music-btn"
+            >删除</div>
+          </div>
         </div>
+        <div
+          v-else
+          style="line-height: 48px"
+          class="w100 h100 text-center"
+        >请使用MP3格式</div>
       </div>
       <div class="form-item">
         <div class="w100 flex-row sp-be-cen">
@@ -67,21 +79,35 @@
       <div class="form-item flex-row sp-be-cen">
         <span>语言讲解</span>
         <el-button
+          @click="() => { isMusicEdit = false; selectVisiable = true }"
           size="small"
           type="primary"
         >选择音乐</el-button>
       </div>
-      <div class="form-item music flex-row -cen mt20">
-        <img
-          @click="startMusic('narrator','isNarrator')"
-          style="width: 35px; height: 35px"
-          :src="isNarrator ?  require('@/assets/icon/stop.png') : require('@/assets/icon/play.png') "
-          alt="播放图标"
-        />
-        <div class="music-data">
-          <div class="music-name">{{ narrator.name }}</div>
-          <div class="music-btn">删除</div>
+      <div class="form-item music">
+        <div
+          v-if="narrator.url"
+          class="w100 h100 flex-row -cen"
+        >
+          <img
+            @click="startMusic('narrator','isNarrator')"
+            style="width: 35px; height: 35px"
+            :src="isNarrator ?  require('@/assets/icon/stop.png') : require('@/assets/icon/play.png') "
+            alt="播放图标"
+          />
+          <div class="music-data">
+            <div class="music-name">{{ narrator.name }}</div>
+            <div
+              @click="deleteMusic('narrator')"
+              class="music-btn"
+            >删除</div>
+          </div>
         </div>
+        <div
+          v-else
+          style="line-height: 48px"
+          class="w100 h100 text-center"
+        >请使用MP3格式</div>
       </div>
       <div class="form-item">
         <div class="w100 flex-row sp-be-cen">
@@ -150,18 +176,33 @@
         >全选</el-checkbox>
       </div>
     </el-dialog>
+    <select-music
+      ref="selectMusic"
+      :selectVisiable="selectVisiable"
+      @close="selectVisiable = false"
+      @selectItem="selectItem"
+    ></select-music>
   </div>
 </template>
 
 <script>
 import setWorksData from '@/mixins/setWorksData.js';
 import { mapGetters } from 'vuex';
+import SelectMusic from '@/components/selectMusic/selectMusic';
 
 export default {
   name: 'music-edit',
   mixins: [setWorksData],
+  components: {
+    SelectMusic
+  },
+  created() {
+    this.music = { ...this.changeMusic };
+    this.narrator = { ...this.changeNarrator };
+  },
   data() {
     return {
+      selectVisiable: false, //是否选择音乐
       isMusicEdit: false, //是否正在应用设置音乐
       newKrpanoList: [], //当前选择的场景
       selectAll: false, //选择全部
@@ -171,7 +212,7 @@ export default {
       //背景音乐
       music: {
         url:
-          'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
+          'https://isure.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=7C68785A13D6C0C0EB3A2466D9E2943AF281F591B7EE3D8A87B57BD4B83F8F47DDBC822264445908DE71D99FED3C1C495CD98FE57ECA1304&uin=0&fromtag=66',
         name: '后来遇见他',
         volume: 100,
         loop: false
@@ -179,7 +220,7 @@ export default {
       //旁白
       narrator: {
         url:
-          'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
+          'https://isure.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=7C68785A13D6C0C0EB3A2466D9E2943AF281F591B7EE3D8A87B57BD4B83F8F47DDBC822264445908DE71D99FED3C1C495CD98FE57ECA1304&uin=0&fromtag=66',
         name: '后来遇见他',
         volume: 100,
         loop: false
@@ -187,6 +228,26 @@ export default {
     };
   },
   methods: {
+    //删除音乐
+    deleteMusic(type) {
+      let form =
+        type == 'music'
+          ? { music: { url: '', name: '', volume: 100, loop: false } }
+          : { narrator: { url: '', name: '', volume: 100, loop: false } };
+      this.buildWorks(form);
+    },
+    //选择对应音乐
+    selectItem(item) {
+      this.$refs.selectMusic.clearCurrentRow({});
+      let { url, name } = item;
+      let type = this.isMusicEdit ? 'music' : 'narrator';
+      let audio = this.$refs[type];
+      audio.pause();
+      audio.currentTime = 0;
+      this[type].url = url;
+      this[type].name = name;
+    },
+    //点击场景取反
     selectKrpano(index) {
       let status = this.newKrpanoList[index].status;
       this.$set(this.newKrpanoList[index], 'status', !status);
@@ -226,9 +287,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['krpanoList']),
+    ...mapGetters(['krpanoList', 'krpanoDetail']),
     someSelect() {
-      return this.newKrpanoList.some(item => item.status === true);
+      return this.newKrpanoList.some(item => item.status == true);
+    },
+    changeMusic() {
+      return this.krpanoDetail.music
+        ? this.krpanoDetail.music
+        : { url: '', name: '', volume: 100, loop: false };
+    },
+    changeNarrator() {
+      return this.krpanoDetail.narrator
+        ? this.krpanoDetail.narrator
+        : { url: '', name: '', volume: 100, loop: false };
     }
   },
   watch: {
@@ -246,7 +317,9 @@ export default {
     },
     dialogVisible(status) {
       if (status) {
-        this.newKrpanoList = this.krpanoList.concat([]);
+        this.newKrpanoList = JSON.parse(
+          JSON.stringify(this.krpanoList.slice(0))
+        );
       }
     },
     selectAll(status) {
@@ -257,6 +330,18 @@ export default {
     newKrpanoList: {
       handler(newValue) {
         this.selectAll = newValue.every(item => item.status === true);
+      },
+      deep: true
+    },
+    changeMusic: {
+      handler(newValue) {
+        this.music = { ...newValue };
+      },
+      deep: true
+    },
+    changeNarrator: {
+      handler(newValue) {
+        this.narrator = { ...newValue };
       },
       deep: true
     }

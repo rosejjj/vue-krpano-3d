@@ -58,14 +58,14 @@ const state = {
         //音乐数据
         music: {
           url:
-            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
+            'https://isure.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=7C68785A13D6C0C0EB3A2466D9E2943AF281F591B7EE3D8A87B57BD4B83F8F47DDBC822264445908DE71D99FED3C1C495CD98FE57ECA1304&uin=0&fromtag=66',
           name: '后来遇见他',
           volume: 100,
           loop: false
         },
         narrator: {
           url:
-            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
+            'https://isure.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=7C68785A13D6C0C0EB3A2466D9E2943AF281F591B7EE3D8A87B57BD4B83F8F47DDBC822264445908DE71D99FED3C1C495CD98FE57ECA1304&uin=0&fromtag=66',
           name: '后来遇见他',
           volume: 100,
           loop: false
@@ -87,14 +87,14 @@ const state = {
         //音乐数据
         music: {
           url:
-            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
+            'https://isure.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=7C68785A13D6C0C0EB3A2466D9E2943AF281F591B7EE3D8A87B57BD4B83F8F47DDBC822264445908DE71D99FED3C1C495CD98FE57ECA1304&uin=0&fromtag=66',
           name: '后来遇见他',
           volume: 100,
           loop: false
         },
         narrator: {
           url:
-            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
+            'https://isure.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=7C68785A13D6C0C0EB3A2466D9E2943AF281F591B7EE3D8A87B57BD4B83F8F47DDBC822264445908DE71D99FED3C1C495CD98FE57ECA1304&uin=0&fromtag=66',
           name: '后来遇见他',
           volume: 100,
           loop: false
@@ -116,14 +116,14 @@ const state = {
         //音乐数据
         music: {
           url:
-            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
+            'https://isure.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=7C68785A13D6C0C0EB3A2466D9E2943AF281F591B7EE3D8A87B57BD4B83F8F47DDBC822264445908DE71D99FED3C1C495CD98FE57ECA1304&uin=0&fromtag=66',
           name: '后来遇见他',
           volume: 100,
           loop: false
         },
         narrator: {
           url:
-            'https://ws.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=46C63E06AFA2F9EF5BB0FF141999960F251D8BA4EA317165E1F065CFE3A7BF38AB17EC2129202C0F0ABA1F87802D6873F724550B48FBD895&uin=0&fromtag=66',
+            'https://isure.stream.qqmusic.qq.com/C400000Umkct2IjBZg.m4a?guid=8471296062&vkey=7C68785A13D6C0C0EB3A2466D9E2943AF281F591B7EE3D8A87B57BD4B83F8F47DDBC822264445908DE71D99FED3C1C495CD98FE57ECA1304&uin=0&fromtag=66',
           name: '后来遇见他',
           volume: 100,
           loop: false

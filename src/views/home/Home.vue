@@ -8,10 +8,7 @@
     </el-header>
     <el-container>
       <el-aside width="50px">
-        <list-bar
-          @editActive="editActive"
-          class="list-bar"
-        ></list-bar>
+        <list-bar class="list-bar"></list-bar>
       </el-aside>
       <el-main>
         <div class="krpano-show">
@@ -123,6 +120,8 @@ export default {
     //初始化场景数据
     initKrpano(obj) {
       let data = this.krpanoDetail;
+      let path = this.$route.path;
+      let hostSpotShow = this.$route.path === '/hotspot';
       let duration = this.worksData.tip.duration;
       this[obj].set('view.hlookat', data.hlookat);
       this[obj].set('view.vlookat', data.vlookat);
@@ -131,6 +130,14 @@ export default {
       this[obj].set('view.vlookatmin', data.vlookatmin);
       this[obj].set('view.vlookatmax', data.vlookatmax);
       data.hostList.forEach(item => this.setHot(obj, item));
+      //根据当前路由是否显示热点
+      data.hostList.forEach(item => {
+        this.krpano.set(`hotspot[${item.spotname}].visible`, hostSpotShow);
+        this.krpano.set(
+          `plugin[tooltip_${item.spotname}].visible`,
+          hostSpotShow
+        );
+      });
     },
     handleClose() {
       this.dialogVisible = false;
@@ -154,18 +161,6 @@ export default {
       this.$message.success('保存成功');
       this.buildWorks(this.form);
     },
-    //侧边栏切换
-    editActive(type) {
-      let data = this.krpanoDetail;
-      let hostSpotShow = type === 2;
-      data.hostList.forEach(item => {
-        this.krpano.set(`hotspot[${item.spotname}].visible`, hostSpotShow);
-        this.krpano.set(
-          `plugin[tooltip_${item.spotname}].visible`,
-          hostSpotShow
-        );
-      });
-    },
     //绘制完成回调
     krpanoReady(obj) {
       this.krpano = obj;
@@ -187,6 +182,20 @@ export default {
   },
   computed: {
     ...mapGetters(['editKrpano', 'worksData', 'krpanoDetail'])
+  },
+  watch: {
+    $route(to) {
+      let path = to.path;
+      let data = this.krpanoDetail;
+      let hostSpotShow = path === '/hotspot';
+      data.hostList.forEach(item => {
+        this.krpano.set(`hotspot[${item.spotname}].visible`, hostSpotShow);
+        this.krpano.set(
+          `plugin[tooltip_${item.spotname}].visible`,
+          hostSpotShow
+        );
+      });
+    }
   }
 };
 </script>

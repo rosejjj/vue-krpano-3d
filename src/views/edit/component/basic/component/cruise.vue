@@ -85,15 +85,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['worksData'])
+    ...mapGetters('active', ['isInit'], ['worksData'])
   },
   watch: {
     'worksData.cruise': {
       handler(newValue, oldValue) {
-        this.form = { ...newValue };
-        this.roteTime = parseInt(360 / this.form.speed);
+        if (!this.isInit) {
+          this.form = { ...newValue };
+          this.roteTime = parseInt(360 / this.form.speed);
+        }
       },
-      immediate: true
+      immediate: true,
+      deep: true
     },
     roteTime: {
       handler(newValue, oldValue) {

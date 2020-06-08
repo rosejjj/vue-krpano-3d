@@ -3,7 +3,6 @@
     <router-link
       :to="item.link"
       tag="div"
-      @click.native="onActive(item.type)"
       v-for="item in list"
       :key="item.type"
       class="list-item flex-colum cen-cen"
@@ -22,7 +21,6 @@
 export default {
   data() {
     return {
-      activeType: 1, //当前编辑项
       list: [
         {
           type: 1,
@@ -70,12 +68,6 @@ export default {
         }
       ]
     };
-  },
-  methods: {
-    onActive(type) {
-      this.activeType = type;
-      this.$emit('editActive', type);
-    }
   }
 };
 </script>

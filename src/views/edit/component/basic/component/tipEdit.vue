@@ -25,6 +25,10 @@
             slot="tip"
           >建议尺寸 300 X 300</div>
           <el-button
+            @click="() => {
+              isMobile = false
+              selectVisiable = true
+            }"
             size="small"
             type="primary"
           >选择图片</el-button>
@@ -42,6 +46,10 @@
             slot="tip"
           >建议尺寸 300 X 300</div>
           <el-button
+            @click="() => {
+               isMobile = true
+              selectVisiable = true
+            }"
             size="small"
             type="primary"
           >选择图片</el-button>
@@ -66,18 +74,30 @@
         >完成</el-button>
       </el-form-item>
     </el-form>
+    <select-image
+      ref="selectImage"
+      :selectVisiable="selectVisiable"
+      @close="selectVisiable = false"
+      @selectItem="selectItem"
+    ></select-image>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import setWorksData from '@/mixins/setWorksData.js';
+import SelectImage from '@/components/selectImage/selectImage';
 
 export default {
+  components: {
+    SelectImage
+  },
   name: 'tip-edit',
   mixins: [setWorksData],
   data() {
     return {
+      isMobile: false, //判断当前是否为移动端
+      selectVisiable: false,
       type: 1,
       form: {
         pcUrl: '',
@@ -96,6 +116,12 @@ export default {
       this.$message.success('设置成功');
       this.close();
     },
+    //选择对应素材图片
+    selectItem(item) {
+      let type = this.isMobile ? 'mobileUrl' : 'pcUrl';
+      this.$refs.selectImage.clearCurrentRow();
+      this.form[type] = item.logo;
+    },
     close() {
       this.$emit('close');
     },
@@ -103,12 +129,14 @@ export default {
     beforeAvatarUpload() {}
   },
   computed: {
-    ...mapGetters(['worksData'])
+    ...mapGetters('active', ['isInit'], ['worksData'])
   },
   watch: {
     'worksData.tip': {
       handler(newValue, oldValue) {
-        this.form = { ...newValue };
+        if (!this.isInit) {
+          this.form = { ...newValue };
+        }
       },
       immediate: true
     }
